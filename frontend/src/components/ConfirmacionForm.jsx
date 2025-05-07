@@ -28,7 +28,7 @@ const ConfirmacionForm = () => {
 
     try {
       await axios.post(
-        "http://localhost:3001/api/invitados/confirmar",
+        "https://revelacion-backend.onrender.com/api/invitados/confirmar",
         formData
       );
       // const numero = "50230268381";
