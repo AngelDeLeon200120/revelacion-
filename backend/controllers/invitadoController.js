@@ -4,68 +4,118 @@ const nodemailer = require("nodemailer");
 const enviarConfirmacion = async (req, res) => {
   const { nombre, email, asistencia, cantidad } = req.body;
 
+  // Validación básica
+  if (!nombre || !email) {
+    return res.status(400).json({ error: "Nombre y email son requeridos" });
+  }
+
   try {
     // Insertar en base de datos
-    const sql = `INSERT INTO invitados (nombre, email, asistencia,cantidad) VALUES (?, ?, ?,?)`;
-    db.query(
-      sql,
-      [nombre, email, asistencia, cantidad],
-      async (err, result) => {
-        if (err) return res.status(500).json({ error: err.message });
-
-        // Enviar correo al invitado
-        const transporter = nodemailer.createTransport({
-          service: "gmail",
-          auth: {
-            user: process.env.GMAIL_USER,
-            pass: process.env.GMAIL_PASS,
-          },
-        });
-
-        const asunto = asistencia
-          ? "¡Gracias por confirmar tu asistencia! 🎉"
-          : "Gracias por avisarnos 💌";
-        const lugar = `
-        <p>📍 Ubicación del evento:</p>
-        <ul>
-          <li><a href="https://www.google.com/maps/place/Apartamentos+Cendana/@14.6070273,-90.5240103,17z/data=!4m16!1m9!4m8!1m0!1m6!1m2!1s0x8589a3ada5f98ed9:0x4848a3521f81dd2d!2sCdad.+de+Guatemala+01009!2m2!1d-90.5213375!2d14.607005!3m5!1s0x8589a3ada5f98ed9:0x4848a3521f81dd2d!8m2!3d14.6070221!4d-90.5214354!16s%2Fg%2F11lkkbklz_?entry=ttu&g_ep=EgoyMDI1MDUwMy4wIKXMDSoASAFQAw%3D%3D" target="_blank">Google Maps</a></li>
-          <li><a href="https://www.waze.com/es-419/live-map/directions?locale=es-419&utm_campaign=share_drive&utm_source=waze_app&utm_medium=undefined&to=ll.14.5293312%2C-90.5773056&from=place.w.176619666.1766065589.28314770" target="_blank">Waze</a></li>
-        </ul>
-      `;
-        const mensajeHTML = `
-  <h2>Hola ${nombre},</h2>
-  <p>${
-    asistencia
-      ? "¡Nos alegra que puedas acompañarnos en la revelación de género! 💙💗"
-      : "Lamentamos que no puedas asistir. Gracias por avisarnos 💔"
-  }</p>
-  ${asistencia ? lugar : ""}
-  <p>Con cariño,<br>Los organizadores</p>
-`;
-
-        await transporter.sendMail({
-          from: `"Revelación de Género" <${process.env.GMAIL_USER}>`,
-          to: email,
-          subject: asunto,
-          html: mensajeHTML,
-        });
-
-        res.json({ mensaje: "Confirmación enviada con éxito" });
-      }
+    const [result] = await db.query(
+      "INSERT INTO invitados (nombre, email, asistencia, cantidad) VALUES (?, ?, ?, ?)",
+      [nombre, email, asistencia, cantidad]
     );
+
+    // Configurar transporte de email
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.GMAIL_USER,
+        pass: process.env.GMAIL_PASS,
+      },
+      tls: {
+        rejectUnauthorized: false // Solo para desarrollo, quitar en producción
+      }
+    });
+
+    // Contenido del email
+    const asunto = asistencia
+      ? "¡Gracias por confirmar tu asistencia! 🎉"
+      : "Gracias por avisarnos 💌";
+    
+    const lugarHTML = asistencia ? `
+      <p>📍 Ubicación del evento:</p>
+      <ul>
+        <li><a href="https://www.google.com/maps/place/Apartamentos+Cendana/@14.6070273,-90.5240103,17z/data=!4m16!1m9!4m8!1m0!1m6!1m2!1s0x8589a3ada5f98ed9:0x4848a3521f81dd2d!2sCdad.+de+Guatemala+01009!2m2!1d-90.5213375!2d14.607005!3m5!1s0x8589a3ada5f98ed9:0x4848a3521f81dd2d!8m2!3d14.6070221!4d-90.5214354!16s%2Fg%2F11lkkbklz_?entry=ttu&g_ep=EgoyMDI1MDUwMy4wIKXMDSoASAFQAw%3D%3D" target="_blank">Google Maps</a></li>
+        <li><a href="https://www.waze.com/es-419/live-map/directions?locale=es-419&utm_campaign=share_drive&utm_source=waze_app&utm_medium=undefined&to=ll.14.5293312%2C-90.5773056&from=place.w.176619666.1766065589.28314770" target="_blank">Waze</a></li>
+      </ul>
+    ` : "";
+
+    const mensajeHTML = `
+      <h2>Hola ${nombre},</h2>
+      <p>${
+        asistencia
+          ? "¡Nos alegra que puedas acompañarnos en la revelación de género! 💙💗"
+          : "Lamentamos que no puedas asistir. Gracias por avisarnos 💔"
+      }</p>
+      ${lugarHTML}
+      <p>Con cariño,<br>Los organizadores</p>
+    `;
+
+    // Enviar email
+    await transporter.sendMail({
+      from: `"Revelación de Género" <${process.env.GMAIL_USER}>`,
+      to: email,
+      subject: asunto,
+      html: mensajeHTML,
+    });
+
+    res.json({ 
+      success: true,
+      message: "Confirmación enviada con éxito",
+      data: {
+        id: result.insertId,
+        nombre,
+        email,
+        asistencia,
+        cantidad
+      }
+    });
+
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: "Error al enviar confirmación" });
+    console.error("Error completo en enviarConfirmacion:", error);
+    res.status(500).json({ 
+      success: false,
+      error: "Error al procesar la confirmación",
+      details: process.env.NODE_ENV === "development" ? error.message : null
+    });
   }
 };
 
-const obtenerInvitados = (req, res) => {
-  const sql =
-    "SELECT nombre, email, asistencia, cantidad FROM invitados ORDER BY id DESC";
-  db.query(sql, (err, results) => {
-    if (err) return res.status(500).json({ error: err.message });
-    res.json(results);
-  });
+const obtenerInvitados = async (req, res) => {
+  try {
+    const [results] = await db.query(
+      "SELECT id, nombre, email, asistencia, cantidad, created_at " +
+      "FROM invitados ORDER BY created_at DESC"
+    );
+
+    // Calcular totales
+    const stats = results.reduce((acc, inv) => {
+      const cantidad = parseInt(inv.cantidad) || 1;
+      acc.total += cantidad;
+      if (inv.asistencia) {
+        acc.confirmados += cantidad;
+      } else {
+        acc.noConfirmados += cantidad;
+      }
+      return acc;
+    }, { total: 0, confirmados: 0, noConfirmados: 0 });
+
+    res.json({
+      success: true,
+      data: {
+        invitados: results,
+        estadisticas: stats
+      }
+    });
+
+  } catch (error) {
+    console.error("Error en obtenerInvitados:", error);
+    res.status(500).json({
+      success: false,
+      error: "Error al obtener la lista de invitados"
+    });
+  }
 };
 
 module.exports = { enviarConfirmacion, obtenerInvitados };
