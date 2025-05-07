@@ -4,7 +4,6 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import "../styles/invitacion.css";
 import Osos from "../assets/image.png";
-import babyBoy from "../assets/baby-boy.png";
 import IMGLugar from "../assets/lugar.png";
 
 const Invitacion = () => {
