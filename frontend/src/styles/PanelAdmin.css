@@ -1,0 +1,140 @@
+/* Fondo general */
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #f7f9fc;
+    color: #333;
+  }
+  
+  /* Panel de acceso (login) */
+  .admin-login-container {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    background-color: #eef2f7;
+  }
+  
+  .admin-login-form {
+    background: #ffffff;
+    border-radius: 1rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+    max-width: 400px;
+    width: 100%;
+  }
+  
+  .admin-login-form h2 {
+    text-align: center;
+    font-size: 1.8rem;
+    color: #1f2937;
+    margin-bottom: 1.5rem;
+  }
+  
+  .admin-login-form input[type="password"] {
+    width: 100%;
+    padding: 0.75rem;
+    margin-bottom: 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+  }
+  
+  .admin-login-form button {
+    width: 100%;
+    background-color: #3b82f6;
+    color: white;
+    padding: 0.75rem;
+    border: none;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  
+  .admin-login-form button:hover {
+    background-color: #2563eb;
+  }
+  
+  /* Panel principal */
+  .panel-admin {
+    padding: 2rem;
+    min-height: 100vh;
+    background-color: #f0f4f8;
+  }
+  
+  .panel-admin h2 {
+    font-size: 2rem;
+    text-align: center;
+    color: #1f2937;
+    margin-bottom: 2rem;
+  }
+  
+  /* Tabla */
+  .table-container {
+    overflow-x: auto;
+    background: white;
+    border-radius: 1rem;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  }
+  
+  .panel-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 600px;
+  }
+  
+  .panel-table thead {
+    background-color: #f1f5f9;
+    color: #374151;
+  }
+  
+  .panel-table th,
+  .panel-table td {
+    padding: 1rem;
+    border: 1px solid #e2e8f0;
+    text-align: center;
+    font-size: 0.95rem;
+  }
+  
+  .panel-table tbody tr:hover {
+    background-color: #f9fafb;
+  }
+  
+  .panel-table tfoot td {
+    font-weight: bold;
+  }
+  
+  .total-general {
+    background-color: #f3f4f6;
+  }
+  
+  .total-confirmados {
+    background-color: #d1fae5;
+    color: #065f46;
+  }
+  
+  .total-no-confirmados {
+    background-color: #fee2e2;
+    color: #991b1b;
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    .admin-login-form h2,
+    .panel-admin h2 {
+      font-size: 1.5rem;
+    }
+  
+    .panel-table th,
+    .panel-table td {
+      padding: 0.75rem;
+      font-size: 0.9rem;
+    }
+  
+    .admin-login-form {
+      padding: 1.5rem;
+    }
+  }
+  

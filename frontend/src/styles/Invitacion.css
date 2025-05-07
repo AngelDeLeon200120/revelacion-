@@ -1,0 +1,151 @@
+@import url('https://fonts.googleapis.com/css2?family=Tagesschrift&display=swap');
+
+/* Pantalla de carga */
+.pantalla-carga {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: linear-gradient(to bottom right, #e8a9c2, #89bae6);
+  }
+  
+  .revelacion-titulo {
+    font-size: 3rem;
+    font-weight: bold;
+    animation: fadeIn 2s ease-in-out;
+    color: black;
+  }
+  
+  /* Fade animation */
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  
+  /* Contenedor principal */
+  .invitacion-container {
+    margin: auto;
+    max-width: 1200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    background: linear-gradient(to bottom right, #f6c7d9, #b7d8f4);
+    min-height: 100vh;
+    text-align: center;
+    font-family: 'Segoe UI', sans-serif;
+  }
+  
+  .invitacion-title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #333;
+    margin: 1rem 0;
+  }
+  
+  .invitacion-subtext {
+    font-size: 1.5rem;
+    color: #555;
+    margin-bottom: 1.5rem;
+  }
+  
+  /* Elefantes */
+  .elefantes-contenedor {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+    margin-bottom: 1rem;
+  }
+  
+  .elefante {
+    width: 400px;
+    max-width: 100%;
+  }
+  
+  /* Contador */
+  .contador-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(60px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  
+  .contador-box {
+    background-color: #fff;
+    padding: 1rem;
+    border-radius: 1rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .contador-box .valor {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #e91e63;
+  }
+  
+  .contador-box .etiqueta {
+    font-size: 0.9rem;
+    color: #777;
+  }
+  
+  /* Imagen del lugar */
+  .img-lugar {
+    width: 100%;
+    max-width: 500px;
+    margin: 1.5rem 0;
+    border-radius: 1rem;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  }
+  
+  /* Botón */
+  .boton-confirmar-invitacion {
+    font-size: 1.5rem;
+    background-color: #e91e63;
+    color: white;
+    font-weight: bold;
+    padding: 0.8rem 2rem;
+    border: none;
+    border-radius: 999px;
+    cursor: pointer;
+    transition: transform 0.2s ease, background-color 0.2s ease;
+  }
+  
+  .boton-confirmar-invitacion:hover {
+    background-color: #d81b60;
+    transform: scale(1.05);
+  }
+  
+  /* Día final */
+  .texto-final {
+    font-size: 1.5rem;
+    color: #e91e63;
+    margin: 1rem 0;
+  }
+  .te-esperamos{
+    margin-top: 150px;
+    font-size: 3rem;
+    font-family: "Tagesschrift", system-ui;
+  font-weight: 400;
+  font-style: normal;
+  }
+  /* Responsive */
+  @media (max-width: 600px) {
+    .contador-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  
+    .invitacion-title {
+      font-size: 2rem;
+    }
+  
+    .elefante {
+      width: 250px;
+    }
+    .te-esperamos{
+        margin-top: 100px;
+        font-size: 2rem;
+    }
+  }
+  
+ 

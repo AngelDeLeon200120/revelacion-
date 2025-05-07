@@ -1,0 +1,143 @@
+/* Fuente general */
+form {
+    background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+    padding: 2rem;
+    max-width: 600px;
+    margin: 2rem auto;
+    border-radius: 20px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+    font-family: "Segoe UI", "Poppins", sans-serif;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  h2 {
+    text-align: center;
+    color: #333;
+    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  input[type="text"],
+  input[type="email"],
+  input[type="number"] {
+    width: 100%;
+    padding: 14px;
+    margin-bottom: 1.2rem;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    font-size: 1rem;
+    transition: box-shadow 0.2s ease-in-out;
+  }
+  
+  input:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(27, 148, 247, 0.2);
+  }
+  
+  .radio-label {
+    display: block;
+    margin-bottom: 0.8rem;
+    font-weight: 500;
+    color: #444;
+  }
+
+  .radio-text-familia{
+    font-size: 12px;
+    display: block;
+    margin-bottom: 0.8rem;
+    font-weight: 500;
+    color: #787676;
+  }
+  
+  input[type="radio"] {
+    margin-right: 8px;
+    accent-color: #ea6082;
+  }
+  
+  /* Contenedor de radios */
+  .radio-container {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+  }
+  
+  .boton-confirmar {
+    width: 100%;
+    background: linear-gradient(90deg, #ea6082, #1b94f7);
+    color: white;
+    padding: 14px;
+    font-size: 1rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 14px;
+    cursor: pointer;
+    transition: transform 0.2s, background 0.3s ease;
+  }
+  
+  .boton-confirmar:hover {
+    transform: scale(1.02);
+    background: linear-gradient(90deg, #ec6c8d, #3fa3fc);
+  }
+  
+  .success-message {
+    background-color: #ffffff;
+    padding: 2rem;
+    max-width: 600px;
+    margin: 2rem auto;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    font-family: "Segoe UI", "Poppins", sans-serif;
+  }
+  
+  .success-message h2 {
+    color: #444;
+    margin-bottom: 1rem;
+    font-size: 1.6rem;
+  }
+  
+  .success-message p {
+    margin-bottom: 1rem;
+    color: #555;
+    font-size: 1rem;
+  }
+  
+  .success-message ul {
+    list-style: none;
+    padding: 0;
+    margin-top: 1rem;
+  }
+  
+  .success-message li {
+    margin: 0.5rem 0;
+  }
+  
+  .success-message a {
+    color: #1b94f7;
+    text-decoration: none;
+    font-weight: bold;
+  }
+  
+  .success-message a:hover {
+    text-decoration: underline;
+  }
+  
+  /* Responsive */
+  @media screen and (max-width: 480px) {
+    form,
+    .success-message {
+      padding: 1.5rem;
+      margin: 1rem;
+    }
+  
+    h2 {
+      font-size: 1.5rem;
+    }
+  
+    .boton-confirmar {
+      font-size: 0.95rem;
+      padding: 12px;
+    }
+  }
+  
