@@ -29,13 +29,19 @@ const PanelAdmin = () => {
           headers: {
             'Content-Type': 'application/json',
             'Accept': 'application/json'
-          },
-          withCredentials: true
+          }
         }
       );
 
       if (data && data.success) {
-        setInvitados(data.data.invitados || []);
+        // Mapeamos los datos para mantener compatibilidad
+        const invitadosFormateados = data.data.invitados.map(inv => ({
+          ...inv,
+          // Usamos fecha_confirmacion como created_at para mantener compatibilidad
+          created_at: inv.fecha_confirmacion || inv.created_at
+        }));
+        
+        setInvitados(invitadosFormateados);
         setStats(data.data.estadisticas || {
           total: 0,
           confirmados: 0,
@@ -95,6 +101,23 @@ const PanelAdmin = () => {
     );
   }
 
+  // Función para formatear la fecha
+  const formatDate = (dateString) => {
+    if (!dateString) return "N/A";
+    
+    try {
+      const date = new Date(dateString);
+      return date.toLocaleDateString("es-GT", {
+        day: "2-digit",
+        month: "short",
+        hour: "2-digit",
+        minute: "2-digit"
+      });
+    } catch {
+      return dateString; // Si falla el parsing, devolver el string original
+    }
+  };
+
   return (
     <div className="panel-admin">
       <div className="admin-header">
@@ -143,7 +166,7 @@ const PanelAdmin = () => {
               <th>Correo</th>
               <th>Asistencia</th>
               <th>Cantidad</th>
-              <th>Fecha</th>
+              <th>Fecha Confirmación</th>
             </tr>
           </thead>
           <tbody>
@@ -166,16 +189,7 @@ const PanelAdmin = () => {
                     )}
                   </td>
                   <td>{inv.cantidad || 1}</td>
-                  <td>
-                    {inv.created_at 
-                      ? new Date(inv.created_at).toLocaleDateString("es-GT", {
-                          day: "2-digit",
-                          month: "short",
-                          hour: "2-digit",
-                          minute: "2-digit"
-                        })
-                      : "N/A"}
-                  </td>
+                  <td>{formatDate(inv.created_at)}</td>
                 </tr>
               ))
             ) : (
