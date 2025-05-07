@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AOS from "aos";
 import "aos/dist/aos.css";
-import "../styles/invitacion.css";
+import "../styles/Invitacion.css";
 import Osos from "../assets/image.png";
 import IMGLugar from "../assets/lugar.png";
 
