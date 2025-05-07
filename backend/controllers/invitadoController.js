@@ -24,11 +24,10 @@ const enviarConfirmacion = async (req, res) => {
         pass: process.env.GMAIL_PASS,
       },
       tls: {
-        rejectUnauthorized: false // Solo para desarrollo, quitar en producción
+        rejectUnauthorized: false // Solo para desarrollo
       }
     });
 
-    // Contenido del email
     const asunto = asistencia
       ? "¡Gracias por confirmar tu asistencia! 🎉"
       : "Gracias por avisarnos 💌";
@@ -52,7 +51,6 @@ const enviarConfirmacion = async (req, res) => {
       <p>Con cariño,<br>Los organizadores</p>
     `;
 
-    // Enviar email
     await transporter.sendMail({
       from: `"Revelación de Género" <${process.env.GMAIL_USER}>`,
       to: email,
@@ -73,7 +71,7 @@ const enviarConfirmacion = async (req, res) => {
     });
 
   } catch (error) {
-    console.error("Error completo en enviarConfirmacion:", error);
+    console.error("Error en enviarConfirmacion:", error);
     res.status(500).json({ 
       success: false,
       error: "Error al procesar la confirmación",
@@ -84,9 +82,10 @@ const enviarConfirmacion = async (req, res) => {
 
 const obtenerInvitados = async (req, res) => {
   try {
+    // Consulta actualizada para usar fecha_confirmacion en lugar de created_at
     const [results] = await db.query(
-      "SELECT id, nombre, email, asistencia, cantidad, created_at " +
-      "FROM invitados ORDER BY created_at DESC"
+      "SELECT id, nombre, email, asistencia, cantidad, fecha_confirmacion " +
+      "FROM invitados ORDER BY fecha_confirmacion DESC"
     );
 
     // Calcular totales
@@ -101,10 +100,17 @@ const obtenerInvitados = async (req, res) => {
       return acc;
     }, { total: 0, confirmados: 0, noConfirmados: 0 });
 
+    // Formatear resultados para el frontend
+    const invitadosFormateados = results.map(inv => ({
+      ...inv,
+      // Mantener compatibilidad con frontend usando created_at
+      created_at: inv.fecha_confirmacion
+    }));
+
     res.json({
       success: true,
       data: {
-        invitados: results,
+        invitados: invitadosFormateados,
         estadisticas: stats
       }
     });
@@ -113,7 +119,8 @@ const obtenerInvitados = async (req, res) => {
     console.error("Error en obtenerInvitados:", error);
     res.status(500).json({
       success: false,
-      error: "Error al obtener la lista de invitados"
+      error: "Error al obtener la lista de invitados",
+      details: process.env.NODE_ENV === "development" ? error.message : null
     });
   }
 };
