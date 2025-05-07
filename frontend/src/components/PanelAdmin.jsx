@@ -27,21 +27,31 @@ const PanelAdmin = () => {
         {
           timeout: 10000,
           headers: {
-            'Cache-Control': 'no-cache'
-          }
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+          },
+          withCredentials: true
         }
       );
 
-      if (data.success) {
-        setInvitados(data.data.invitados);
-        setStats(data.data.estadisticas);
+      if (data && data.success) {
+        setInvitados(data.data.invitados || []);
+        setStats(data.data.estadisticas || {
+          total: 0,
+          confirmados: 0,
+          noConfirmados: 0
+        });
         setLastUpdated(new Date().toLocaleTimeString());
       } else {
-        throw new Error(data.error || "Error al obtener datos");
+        throw new Error(data?.error || "Respuesta inválida del servidor");
       }
     } catch (error) {
       console.error("Error al obtener invitados:", error);
-      setError(error.message || "Error al cargar los invitados");
+      setError(
+        error.response?.data?.error ||
+        error.message ||
+        "Error al cargar los invitados. Por favor intenta nuevamente."
+      );
     } finally {
       setLoading(false);
     }
@@ -52,6 +62,7 @@ const PanelAdmin = () => {
     if (clave === "admin123") {
       setAutenticado(true);
       localStorage.setItem("autenticado", "true");
+      obtenerInvitados();
     } else {
       alert("Clave incorrecta");
       setClave("");
@@ -61,7 +72,7 @@ const PanelAdmin = () => {
   useEffect(() => {
     if (autenticado) {
       obtenerInvitados();
-      const interval = setInterval(obtenerInvitados, 60000); // Actualizar cada minuto
+      const interval = setInterval(obtenerInvitados, 60000);
       return () => clearInterval(interval);
     }
   }, [autenticado]);
@@ -100,7 +111,14 @@ const PanelAdmin = () => {
         </div>
       </div>
 
-      {error && <div className="error-message">{error}</div>}
+      {error && (
+        <div className="error-message">
+          {error}
+          <button onClick={obtenerInvitados} className="retry-btn">
+            Reintentar
+          </button>
+        </div>
+      )}
 
       <div className="stats-container">
         <div className="stat-card total">
@@ -137,7 +155,7 @@ const PanelAdmin = () => {
               </tr>
             ) : invitados.length > 0 ? (
               invitados.map((inv) => (
-                <tr key={inv.id}>
+                <tr key={inv.id || inv.email}>
                   <td>{inv.nombre}</td>
                   <td>{inv.email}</td>
                   <td>
@@ -147,14 +165,16 @@ const PanelAdmin = () => {
                       <span className="status-declined">❌ No asistirá</span>
                     )}
                   </td>
-                  <td>{inv.cantidad}</td>
+                  <td>{inv.cantidad || 1}</td>
                   <td>
-                    {new Date(inv.created_at).toLocaleDateString("es-GT", {
-                      day: "2-digit",
-                      month: "short",
-                      hour: "2-digit",
-                      minute: "2-digit"
-                    })}
+                    {inv.created_at 
+                      ? new Date(inv.created_at).toLocaleDateString("es-GT", {
+                          day: "2-digit",
+                          month: "short",
+                          hour: "2-digit",
+                          minute: "2-digit"
+                        })
+                      : "N/A"}
                   </td>
                 </tr>
               ))
@@ -173,6 +193,12 @@ const PanelAdmin = () => {
         onClick={() => {
           localStorage.removeItem("autenticado");
           setAutenticado(false);
+          setInvitados([]);
+          setStats({
+            total: 0,
+            confirmados: 0,
+            noConfirmados: 0
+          });
         }}
         className="logout-button"
       >
