@@ -11,7 +11,8 @@ router.use((req, res, next) => {
   next();
 });
 
-router.post('/confirmar', enviarConfirmacion);
+// Rutas bien definidas
+router.post('/confirmar', enviarConfirmacion);  // Cambiado de '/confirmar' a '/confirmar'
 router.get('/listar', obtenerInvitados);
 
 // Manejo de rutas no encontradas

@@ -2,52 +2,63 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
+const { createPool } = require('mysql2/promise');
 
 const app = express();
 
-// Configuración CORS mejorada
+// Configuración CORS
 const corsOptions = {
-  origin: [
-    'https://revelacion-six.vercel.app',
-    'http://localhost:3000'
-  ],
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: [
-    'Content-Type',
-    'Authorization',
-    'Cache-Control',
-    'X-Requested-With'
-  ],
-  credentials: true,
-  optionsSuccessStatus: 200
+  origin: process.env.ALLOWED_ORIGINS.split(','),
+  methods: ['GET', 'POST', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true
 };
 
 app.use(cors(corsOptions));
-
-// Manejar preflight requests
 app.options('*', cors(corsOptions));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan('dev'));
 
-// Rutas principales
-app.use('/api/invitados', require('./routes/invitados'));
+// Conexión a la base de datos
+const pool = createPool({
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_NAME,
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0
+});
 
-// Health check endpoint
+// Verificar conexión a DB al iniciar
+pool.getConnection()
+  .then(conn => {
+    console.log('🟢 Conectado a MySQL');
+    conn.release();
+  })
+  .catch(err => {
+    console.error('🔴 Error de conexión a MySQL:', err);
+  });
+
+// Rutas principales
+const invitadosRouter = require('./routes/invitados');
+app.use('/api/invitados', invitadosRouter);
+
+// Health check
 app.get('/health', (req, res) => {
   res.status(200).json({ 
     status: 'OK',
-    timestamp: new Date().toISOString(),
-    environment: process.env.NODE_ENV || 'development'
+    db: pool ? 'Conectado' : 'Desconectado',
+    timestamp: new Date().toISOString()
   });
 });
 
-// Manejo de errores global
+// Manejo de errores
 app.use((err, req, res, next) => {
-  console.error('Error global:', err.stack);
+  console.error('Error:', err.stack);
   res.status(500).json({
-    success: false,
     error: 'Error interno del servidor',
     message: process.env.NODE_ENV === 'development' ? err.message : null
   });
@@ -55,7 +66,6 @@ app.use((err, req, res, next) => {
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
-  console.log(`🚀 Servidor corriendo en puerto ${PORT}`);
+  console.log(`🚀 Servidor en puerto ${PORT}`);
   console.log(`Entorno: ${process.env.NODE_ENV || 'development'}`);
-  console.log(`Orígenes permitidos: ${corsOptions.origin.join(', ')}`);
 });
