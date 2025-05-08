@@ -37,7 +37,8 @@ const Respuesta = () => {
             </li>
           </ul>
           <p className="invitacion-subtext">
-            Te esperamos el 8 de Junio en Apartamentos Cendana. ¡No faltes!
+          Te esperamos el 8 de Junio a las 3:00 PM en Apartamentos Cendana, 5 Av. 08‐06 Zona 9, Salón Celebraciones.
+          Evento a nombre de Sara De León. ¡No faltes!
           </p>
           <img src={IMGLugar} alt="Lugar del evento" style={{ width: '100%' }} />
         </>
