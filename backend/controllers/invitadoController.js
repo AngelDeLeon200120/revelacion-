@@ -44,11 +44,11 @@ const enviarConfirmacion = async (req, res) => {
       <h2>Hola ${nombre},</h2>
       <p>${
         asistencia
-          ? "¡Nos alegra que puedas acompañarnos en la revelación de género! 💙💗"
+          ? "¡Nos alegra que puedas acompañarnos en la revelación de género!, recuerda. Los esperamos el domingo 8 de junio 📅 a las 3:00 PM en el Salón Celebraciones de Apartamentos Cendana (5ta. Av. 08-06, Zona 9). Este evento especial está a nombre de Sara De León. ¡Será un honor contar con tu presencia! 💙💗"
           : "Lamentamos que no puedas asistir. Gracias por avisarnos 💔"
       }</p>
       ${lugarHTML}
-      <p>Con cariño,<br>Los organizadores</p>
+      <p>Con cariño,<br>Familia De Leon/p>
     `;
 
     await transporter.sendMail({
