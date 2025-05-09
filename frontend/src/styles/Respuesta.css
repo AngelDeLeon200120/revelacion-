@@ -1,0 +1,138 @@
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Tagesschrift&display=swap');
+
+.respuesta-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+    background: linear-gradient(to bottom right, #ffe6f0, #e6f3ff);
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    font-family: 'Segoe UI', sans-serif;
+    color: #444;
+    text-align: center;
+    animation: fadeIn 1s ease-in;
+  }
+  
+  .titulo-confirmado {
+    color: #ff69b4;
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+  }
+  
+  .titulo-noasiste {
+    color: #999;
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+  
+  .detalle-asistencia,
+  .detalle-noasiste {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .detalles-evento p {
+    margin: 3.5rem 0;
+    font-size: 1.5rem;
+    font-family: "Tagesschrift", system-ui;
+    font-weight: 400;
+    font-style: normal;
+  }
+  
+  .links-mapas {
+    list-style: none;
+    padding: 0;
+    margin: 4rem 0;
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+ 
+  }
+  
+  .links-mapas a {
+    font-size: 1.5rem;
+    text-decoration: none;
+    color: white;
+    background-color: #77c7ff;
+    padding: 10px 20px;
+    border-radius: 10px;
+    transition: background-color 0.3s ease;
+  }
+  
+  .links-mapas a:hover {
+    background-color: #5ab5f5;
+  }
+  
+  .imagen-lugar {
+    margin-top: 2rem;
+    width: 85%;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  }
+  
+  .acceso-denegado {
+    text-align: center;
+    margin-top: 5rem;
+    font-size: 1.5rem;
+    color: #d9534f;
+  }
+  
+  @media screen and (max-width: 600px) {
+    .respuesta-container {
+      padding: 1rem;
+    }
+  
+    .titulo-confirmado,
+    .titulo-noasiste {
+      font-size: 1.7rem;
+    }
+  
+    .detalle-asistencia,
+    .detalle-noasiste {
+      font-size: 1.2rem;
+    }
+  
+    .links-mapas {
+      flex-direction: column;
+      gap: 3rem;
+      margin-bottom: 50px;
+    }
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(15px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+.gmail{
+    font-size: 1.2rem;
+    font-family: "Tagesschrift", system-ui;
+    font-weight: 400;
+    font-style: normal;
+}
+  .btn-musica {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+    background: linear-gradient(to right, #e01b39, #a864ef);
+    border: none;
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease;
+  }
+  
+  .btn-musica:hover {
+    transform: scale(1.1);
+  }
+  

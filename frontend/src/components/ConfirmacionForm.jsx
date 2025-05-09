@@ -31,6 +31,7 @@ const ConfirmacionForm = () => {
 
     try {
       const response = await axios.post(
+        // https://revelacion-backend.onrender.com
         "https://revelacion-backend.onrender.com/api/invitados/confirmar",
         formData,
         {

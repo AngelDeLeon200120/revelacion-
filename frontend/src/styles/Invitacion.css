@@ -1,8 +1,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Tagesschrift&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Tagesschrift&display=swap');
 
 /* Pantalla de carga */
 .pantalla-carga {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 100vh;
@@ -14,6 +16,14 @@
     font-weight: bold;
     animation: fadeIn 2s ease-in-out;
     color: black;
+  }
+
+  .revelacion-titulo2{
+    font-size: 2.7rem;
+    font-weight: bold;
+    animation: fadeIn 2s ease-in-out;
+    color: black;
+    margin-top: -10px;
   }
   
   /* Fade animation */
@@ -38,16 +48,23 @@
   }
   
   .invitacion-title {
-    font-size: 2.5rem;
+    font-size: 3rem;
     font-weight: bold;
     color: #333;
-    margin: 1rem 0;
+    margin: 4rem 0;
+     color: #458185;
+    font-family: "Tagesschrift", system-ui;
+    font-weight: 400;
+    font-style: normal;
   }
   
   .invitacion-subtext {
     font-size: 1.5rem;
     color: #555;
     margin-bottom: 1.5rem;
+    font-family: "Tagesschrift", system-ui;
+    font-weight: 400;
+    font-style: normal;
   }
   
   /* Elefantes */
@@ -59,7 +76,7 @@
   }
   
   .elefante {
-    width: 400px;
+    width: 550px;
     max-width: 100%;
   }
   
@@ -109,6 +126,7 @@
     border-radius: 999px;
     cursor: pointer;
     transition: transform 0.2s ease, background-color 0.2s ease;
+    animation: moverLados 2s ease-in-out infinite alternate;
   }
   
   .boton-confirmar-invitacion:hover {
@@ -122,12 +140,13 @@
     color: #e91e63;
     margin: 1rem 0;
   }
-  .te-esperamos{
+  .te-esperamos {
     margin-top: 150px;
     font-size: 3rem;
     font-family: "Tagesschrift", system-ui;
-  font-weight: 400;
-  font-style: normal;
+    font-weight: 400;
+    font-style: normal;
+    animation: moverLados 2s ease-in-out infinite alternate;
   }
   /* Responsive */
   @media (max-width: 600px) {
@@ -140,10 +159,53 @@
     }
   
     .elefante {
-      width: 250px;
+      width:  550px;
     }
     .te-esperamos{
         margin-top: 100px;
         font-size: 2rem;
     }
   }
+
+  @keyframes moverLados {
+    0% {
+      transform: translateX(-10px);
+    }
+    100% {
+      transform: translateX(10px);
+    }
+  }
+.daniel{
+    color:#6db6f6 ;
+    font-family: "Tagesschrift", system-ui;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.andrea{
+    color: #fa75aa;
+    font-family: "Tagesschrift", system-ui;
+    font-weight: 400;
+    font-style: normal;
+}
+
+
+.principes{
+    margin-top: -10px;
+    font-size: 2rem;
+}
+.Príncipe{
+    font-size: 1.5rem;
+    color:#6db6f6 ;
+    font-family: "Tagesschrift", system-ui;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.Princesa{
+    font-size: 1.5rem;
+    color: #fa75aa;
+    font-family: "Tagesschrift", system-ui;
+    font-weight: 400;
+    font-style: normal;
+}
