@@ -70,7 +70,9 @@ const Invitacion = () => {
 
     const playAudio = () => {
       audio.play().catch((e) => {
-        console.warn("El navegador bloqueó la reproducción automática de audio.");
+        console.warn(
+          "El navegador bloqueó la reproducción automática de audio."
+        );
       });
     };
 
@@ -87,7 +89,9 @@ const Invitacion = () => {
     return (
       <div className="pantalla-carga">
         <h1 className="revelacion-titulo animate-fade">¡Revelación!</h1>
-        <div><h1 className="revelacion-titulo2 animate-fade">Toca la pantalla!</h1></div>
+        <div>
+          <h1 className="revelacion-titulo2 animate-fade">Toca la pantalla!</h1>
+        </div>
       </div>
     );
   }
@@ -100,12 +104,23 @@ const Invitacion = () => {
       <div className="elefantes-contenedor" data-aos="zoom-in">
         <img src={Osos} alt="¿Luna?" className="elefante" />
       </div>
+      <div className="nombres" data-aos="fade-up">
+        <p>
+          <span className="daniel">Daniel</span>
+        </p>
+        <p className="y">y</p>
+        <p>
+          <span className="andrea">Andrea</span>
+        </p>
+      </div>
       <p className="invitacion-subtext" data-aos="fade-up">
-        Con mucha alegría, mis padres <span className="daniel">Daniel</span> y <span className="andrea">Andrea</span> te invitan a descubrir si
-        seré:
+        Con mucha alegría, mis padres te invitan a descubrir si seré:
       </p>
 
-      <p className="principes"><span className="Príncipe">💙Príncipe</span> o  <span className="Princesa">💖Princesa</span></p>
+      <p className="principes">
+        <span className="Príncipe">💙Príncipe</span>
+        <span>o</span> <span className="Princesa">Princesa💖</span>
+      </p>
 
       <div className="contador-grid" data-aos="fade-up">
         {["Días", "Horas", "Minutos", "Segundos"].map((etiqueta, i) => (
@@ -131,20 +146,19 @@ const Invitacion = () => {
         </div>
       ) : (
         <p className="invitacion-subtext" data-aos="fade-up">
-          Los esperamos el domingo 8 de junio a las 3:00 PM en el Salón
-          Celebraciones de Apartamentos Cendana (5ta. Av. 08-06, Zona 9). Este
-          evento especial está a nombre de Sara De León. ¡Será un honor contar con
-          tu presencia!
+          🎉 <strong>¡Estás cordialmente invitado!</strong>
+          <br />
+          📅 <strong>Domingo 8 de junio</strong> a las <strong>3:00 PM</strong>
+          <br />
+          📍 <strong>Salón Celebraciones</strong>, Apartamentos Cendana
+          <br />
+          <em>(5ta. Av. 08-06, Zona 9)</em>
+          <br />
+          👶 Este evento especial está a nombre de <strong>Sara De León</strong>
+          <br />
+          💖 ¡Será un honor contar con tu presencia!
         </p>
       )}
-
-      <img
-        src={IMGLugar}
-        alt="Lugar del evento"
-        className="img-lugar"
-        data-aos="fade-up"
-      />
-
       <button
         onClick={() => navigate("/confirmar")}
         className="boton-confirmar-invitacion"
@@ -152,8 +166,16 @@ const Invitacion = () => {
       >
         Confirmar asistencia
       </button>
+      <img
+        src={IMGLugar}
+        alt="Lugar del evento"
+        className="img-lugar"
+        data-aos="fade-up"
+      />
 
-      <div className="te-esperamos" data-aos="fade-up">Te esperamos</div>
+      <div className="te-esperamos" data-aos="fade-up">
+        Te esperamos
+      </div>
     </div>
   );
 };

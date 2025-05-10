@@ -137,12 +137,29 @@ const Respuesta = () => {
           )}
 
           <div className="detalles-evento" data-aos="fade-up">
-            <p>
-              Los esperamos el domingo 8 de junio 📅 a las 3:00 PM en el Salón
-              Celebraciones de Apartamentos Cendana (5ta. Av. 08-06, Zona 9).
-              Este evento especial está a nombre de Sara De León. ¡Será un honor
-              contar con tu presencia!
+            <p
+              style={{
+                fontSize: "1.5rem",
+                lineHeight: "1.6",
+                textAlign: "center",
+                color: "#444",
+              }}
+            >
+              🎉 <strong>¡Estás cordialmente invitado!</strong>
+              <br />
+              📅 <strong>Domingo 8 de junio</strong> a las{" "}
+              <strong>3:00 PM</strong>
+              <br />
+              📍 <strong>Salón Celebraciones</strong>, Apartamentos Cendana
+              <br />
+              <em>(5ta. Av. 08-06, Zona 9)</em>
+              <br />
+              👶 Este evento especial está a nombre de{" "}
+              <strong>Sara De León</strong>
+              <br />
+              💖 ¡Será un honor contar con tu presencia!
             </p>
+
             <p>
               💙 Si crees que es <strong>príncipe</strong>, vístete de celeste
             </p>

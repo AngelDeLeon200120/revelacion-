@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
 import "../styles/ConfirmacionForm.css";
-import IMGLugar from "../assets/image.png";
+// import IMGLugar from "../assets/image.png";
 import { useNavigate } from "react-router-dom";
 
 const ConfirmacionForm = () => {
