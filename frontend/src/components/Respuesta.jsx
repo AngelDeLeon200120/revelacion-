@@ -115,7 +115,7 @@ const Respuesta = () => {
               data-aos="zoom-in"
             />
             <p>🎁 Colaboración: pañales Pampers (tallas 1-5) </p>
-            <p>muchas gracias</p>
+            <p>¡muchas gracias!</p>
             <img
             src={IMGLugar}
             alt="Lugar del evento"
