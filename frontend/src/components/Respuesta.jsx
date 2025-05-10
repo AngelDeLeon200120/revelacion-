@@ -87,6 +87,66 @@ const Respuesta = () => {
           <h2 className="titulo-confirmado" data-aos="fade-down">
             🎉 ¡Gracias {nombre} por confirmar!
           </h2>
+          
+
+          {tiempoRestante.terminado && (
+            <div className="texto-final animate-pulse" data-aos="zoom-in">
+              ¡Hoy es el gran día! 🎉
+            </div>
+          )}
+
+          <div className="detalles-evento" data-aos="fade-up">
+          <p>
+              💙 Si crees que es <strong>príncipe</strong>, vístete de celeste
+            </p>
+            <img
+              src={osoboy}
+              alt="Niño"
+              className="imagen-lugar"
+              data-aos="zoom-in"
+            />
+            <p>
+              💖 Si crees que es <strong>princesa</strong>, vístete de rosado
+            </p>
+            <img
+              src={osogirl}
+              alt="Niña"
+              className="imagen-lugar"
+              data-aos="zoom-in"
+            />
+            <p>🎁 Colaboración: pañales Pampers (tallas 1-5) </p>
+            <p>muchas gracias</p>
+            <img
+            src={IMGLugar}
+            alt="Lugar del evento"
+            className="imagen-lugar"
+            data-aos="zoom-in"
+          />
+            <p
+              style={{
+                fontSize: "1.5rem",
+                lineHeight: "1.6",
+                textAlign: "center",
+                color: "#444",
+              }}
+            >
+              🎉 <strong>¡Estás cordialmente invitado!</strong>
+              <br />
+              📅 <strong>Domingo 8 de junio</strong> a las{" "}
+              <strong>3:00 PM</strong>
+              <br />
+              📍 <strong>Salón Celebraciones</strong>, Apartamentos Cendana
+              <br />
+              <em>(5ta. Av. 08-06, Zona 9)</em>
+              <br />
+              👶 Este evento especial está a nombre de{" "}
+              <strong>Sara De León</strong>
+              <br />
+              💖 ¡Será un honor contar con tu presencia!
+            </p>
+
+          </div>
+
           <p className="detalle-asistencia" data-aos="fade-up">
             Asistirás con <strong>{cantidad}</strong> persona(s). Aquí tienes la
             ubicación:
@@ -129,64 +189,6 @@ const Respuesta = () => {
               </div>
             ))}
           </div>
-
-          {tiempoRestante.terminado && (
-            <div className="texto-final animate-pulse" data-aos="zoom-in">
-              ¡Hoy es el gran día! 🎉
-            </div>
-          )}
-
-          <div className="detalles-evento" data-aos="fade-up">
-            <p
-              style={{
-                fontSize: "1.5rem",
-                lineHeight: "1.6",
-                textAlign: "center",
-                color: "#444",
-              }}
-            >
-              🎉 <strong>¡Estás cordialmente invitado!</strong>
-              <br />
-              📅 <strong>Domingo 8 de junio</strong> a las{" "}
-              <strong>3:00 PM</strong>
-              <br />
-              📍 <strong>Salón Celebraciones</strong>, Apartamentos Cendana
-              <br />
-              <em>(5ta. Av. 08-06, Zona 9)</em>
-              <br />
-              👶 Este evento especial está a nombre de{" "}
-              <strong>Sara De León</strong>
-              <br />
-              💖 ¡Será un honor contar con tu presencia!
-            </p>
-
-            <p>
-              💙 Si crees que es <strong>príncipe</strong>, vístete de celeste
-            </p>
-            <img
-              src={osoboy}
-              alt="Niño"
-              className="imagen-lugar"
-              data-aos="zoom-in"
-            />
-            <p>
-              💖 Si crees que es <strong>princesa</strong>, vístete de rosado
-            </p>
-            <img
-              src={osogirl}
-              alt="Niña"
-              className="imagen-lugar"
-              data-aos="zoom-in"
-            />
-            <p>🎁 Colaboración: pañales Pampers (tallas 1-5)</p>
-          </div>
-
-          <img
-            src={IMGLugar}
-            alt="Lugar del evento"
-            className="imagen-lugar"
-            data-aos="zoom-in"
-          />
 
           <p className="gmail">Recuerda revisa tu correo</p>
         </>
