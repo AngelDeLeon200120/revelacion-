@@ -190,7 +190,7 @@ const Respuesta = () => {
             ))}
           </div>
 
-          <p className="gmail">Recuerda revisa tu correo</p>
+          <p className="gmail">Recuerda revisar tu correo</p>
         </>
       ) : (
         <>
