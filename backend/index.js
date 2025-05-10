@@ -3,7 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
 const { createPool } = require('mysql2/promise');
-
+const path = require('path');
 const app = express();
 
 // Configuración mejorada de CORS con valores por defecto
@@ -45,7 +45,7 @@ app.options('*', cors(getCorsOptions()));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan('dev'));
-
+app.use('/assets', express.static(path.join(__dirname, 'assets')));
 // Verificación de variables de entorno requeridas
 const requiredEnvVars = ['DB_HOST', 'DB_USER', 'DB_PASSWORD', 'DB_NAME'];
 requiredEnvVars.forEach(env => {
