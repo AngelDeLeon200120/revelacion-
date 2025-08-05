@@ -23,6 +23,8 @@ const PanelAdmin = () => {
       setError(null);
       
       const { data } = await axios.get(
+        //http://localhost:3001
+        // https://revelacion-backend.onrender.com
         "https://revelacion-backend.onrender.com/api/invitados/listar",
         {
           timeout: 10000,
@@ -167,6 +169,7 @@ const PanelAdmin = () => {
               <th>Asistencia</th>
               <th>Cantidad</th>
               <th>Fecha Confirmación</th>
+              <th>Placa</th>
             </tr>
           </thead>
           <tbody>
@@ -190,6 +193,7 @@ const PanelAdmin = () => {
                   </td>
                   <td>{inv.cantidad || 1}</td>
                   <td>{formatDate(inv.created_at)}</td>
+                  <td>{inv.placaVehiculo}</td>
                 </tr>
               ))
             ) : (

@@ -8,7 +8,7 @@
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background: linear-gradient(to bottom right, #e8a9c2, #89bae6);
+    background: #b7d8f4;
   }
   
   .revelacion-titulo {
@@ -41,7 +41,7 @@
     align-items: center;
     justify-content: center;
     padding: 2rem;
-    background: linear-gradient(to bottom right, #f6c7d9, #b7d8f4);
+    background:#b7d8f4;
     min-height: 100vh;
     text-align: center;
     font-family: 'Segoe UI', sans-serif;

@@ -4,7 +4,7 @@
     max-width: 800px;
     margin: 0 auto;
     padding: 2rem;
-    background: linear-gradient(to bottom right, #ffe6f0, #e6f3ff);
+    background:  #e6f3ff;
     border-radius: 20px;
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
     font-family: 'Segoe UI', sans-serif;
@@ -14,7 +14,7 @@
   }
   
   .titulo-confirmado {
-    color: #ff69b4;
+    color: #20262c;
     font-size: 2.5rem;
     margin-bottom: 1rem;
   }

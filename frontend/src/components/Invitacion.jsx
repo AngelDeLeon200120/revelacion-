@@ -5,6 +5,8 @@ import "aos/dist/aos.css";
 import "../styles/Invitacion.css";
 import Osos from "../assets/invitacion.jpg";
 import IMGLugar from "../assets/lugar.png";
+import bbeleon from "../assets/bb2.jpg";
+
 import Musica from "../assets/musica.mp3"; // archivo de música
 
 const Invitacion = () => {
@@ -28,7 +30,7 @@ const Invitacion = () => {
 
     const ahora = new Date();
     const añoActual = ahora.getFullYear();
-    const evento = new Date(añoActual, 5, 8);
+    const evento = new Date(añoActual, 7, 31);
     if (ahora > evento) evento.setFullYear(añoActual + 1);
 
     const actualizarContador = () => {
@@ -69,7 +71,7 @@ const Invitacion = () => {
     audio.volume = 0.5;
 
     const playAudio = () => {
-      audio.play().catch((e) => {
+      audio.play().catch(() => {
         console.warn(
           "El navegador bloqueó la reproducción automática de audio."
         );
@@ -88,10 +90,10 @@ const Invitacion = () => {
   if (!mostrarContenido) {
     return (
       <div className="pantalla-carga">
-        <h1 className="revelacion-titulo animate-fade">¡Revelación!</h1>
-        <div>
-          <h1 className="revelacion-titulo2 animate-fade">Toca la pantalla!</h1>
-        </div>
+        <h1 className="revelacion-titulo animate-fade">Baby Shower</h1>
+        {/* <div>
+          <h1 className="revelacion-titulo2 animate-fade">Baby Shower</h1>
+        </div> */}
       </div>
     );
   }
@@ -99,28 +101,37 @@ const Invitacion = () => {
   return (
     <div className="invitacion-container">
       <h1 className="invitacion-title" data-aos="fade-up">
-        ¡Estás invitado a nuestra revelación de género!
+        Estás invitado a nuestro Baby Shower De:
       </h1>
-      <div className="elefantes-contenedor" data-aos="zoom-in">
+      {/* <div className="elefantes-contenedor" data-aos="zoom-in">
         <img src={Osos} alt="¿Luna?" className="elefante" />
-      </div>
+      </div> */}
       <div className="nombres" data-aos="fade-up">
         <p>
-          <span className="daniel">Daniel</span>
+          <span className="daniel">Juan Ignacio</span>
         </p>
-        <p className="y">y</p>
+
+        <img
+        src={bbeleon}
+        alt="Lugar del evento"
+        className="img-lugar"
+        data-aos="fade-up"
+      />
+        {/* <p className="y">y</p>
         <p>
           <span className="andrea">Andrea</span>
-        </p>
+        </p> */}
       </div>
       <p className="invitacion-subtext" data-aos="fade-up">
-        Con mucha alegría, mis padres te invitan a descubrir si seré:
+        Nos llena de alegría compartir contigo que se acerca la llegada de
+        nuestro pequeño <strong>Juan Ignacio</strong>. Por eso, queremos
+        celebrar juntos.
       </p>
 
-      <p className="principes">
+      {/* <p className="principes">
         <span className="Príncipe">💙Príncipe</span>
         <span>o</span> <span className="Princesa">Princesa💖</span>
-      </p>
+      </p> */}
 
       <div className="contador-grid" data-aos="fade-up">
         {["Días", "Horas", "Minutos", "Segundos"].map((etiqueta, i) => (
@@ -148,7 +159,7 @@ const Invitacion = () => {
         <p className="invitacion-subtext" data-aos="fade-up">
           🎉 <strong>¡Estás cordialmente invitado!</strong>
           <br />
-          📅 <strong>Domingo 8 de junio</strong> a las <strong>3:00 PM</strong>
+          📅 <strong>Domingo 31 de Agosto</strong> a las <strong>2:00 PM</strong>
           <br />
           📍 <strong>Salón Celebraciones</strong>, Apartamentos Cendana
           <br />

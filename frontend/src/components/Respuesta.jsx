@@ -1,8 +1,8 @@
 import { useLocation } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
-import IMGLugar from "../assets/tallas.jpg";
-import osoboy from "../assets/osoboy.jpg";
-import osogirl from "../assets/osogirl.jpg";
+import IMGLugar from "../assets/regalos.png";
+import osoboy from "../assets/lion2.jpg";
+// import osogirl from "../assets/osogirl.jpg";
 import musica from "../assets/musica.mp3";
 
 import AOS from "aos";
@@ -29,7 +29,7 @@ const Respuesta = () => {
     // Configuración del contador
     const ahora = new Date();
     const añoActual = ahora.getFullYear();
-    const evento = new Date(añoActual, 5, 8); // 8 de junio
+    const evento = new Date(añoActual, 7, 31); // 8 de junio
     if (ahora > evento) evento.setFullYear(añoActual + 1);
 
     const actualizarContador = () => {
@@ -97,7 +97,7 @@ const Respuesta = () => {
 
           <div className="detalles-evento" data-aos="fade-up">
           <p>
-              💙 Si crees que es <strong>príncipe</strong>, vístete de celeste
+              <strong>Juan Ignacio</strong>💙 te espera
             </p>
             <img
               src={osoboy}
@@ -105,7 +105,7 @@ const Respuesta = () => {
               className="imagen-lugar"
               data-aos="zoom-in"
             />
-            <p>
+            {/* <p>
               💖 Si crees que es <strong>princesa</strong>, vístete de rosado
             </p>
             <img
@@ -113,8 +113,8 @@ const Respuesta = () => {
               alt="Niña"
               className="imagen-lugar"
               data-aos="zoom-in"
-            />
-            <p>🎁 Colaboración: pañales Pampers (tallas 1-5) </p>
+            /> */}
+            <p>🎁 Colaboración: regalo para bebe</p>
             <p>¡muchas gracias!</p>
             <img
             src={IMGLugar}
@@ -132,8 +132,8 @@ const Respuesta = () => {
             >
               🎉 <strong>¡Estás cordialmente invitado!</strong>
               <br />
-              📅 <strong>Domingo 8 de junio</strong> a las{" "}
-              <strong>3:00 PM</strong>
+              📅 <strong>Domingo 31 de Agosto</strong> a las{" "}
+              <strong>2:00 PM</strong>
               <br />
               📍 <strong>Salón Celebraciones</strong>, Apartamentos Cendana
               <br />

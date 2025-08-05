@@ -11,6 +11,7 @@ const ConfirmacionForm = () => {
     email: "",
     asistencia: true,
     cantidad: 1,
+    placaVehiculo: "",
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -19,8 +20,12 @@ const ConfirmacionForm = () => {
     const { name, value, type, checked } = e.target;
     setFormData({
       ...formData,
-      [name]: type === "radio" ? value === "true" : 
-              type === "checkbox" ? checked : value,
+      [name]:
+        type === "radio"
+          ? value === "true"
+          : type === "checkbox"
+          ? checked
+          : value,
     });
   };
 
@@ -31,14 +36,15 @@ const ConfirmacionForm = () => {
 
     try {
       const response = await axios.post(
+        //http://localhost:3001
         // https://revelacion-backend.onrender.com
         "https://revelacion-backend.onrender.com/api/invitados/confirmar",
         formData,
         {
           timeout: 10000, // 10 segundos timeout
           headers: {
-            'Content-Type': 'application/json',
-          }
+            "Content-Type": "application/json",
+          },
         }
       );
 
@@ -47,19 +53,22 @@ const ConfirmacionForm = () => {
           nombre: formData.nombre,
           asistencia: String(formData.asistencia),
           cantidad: formData.cantidad,
+          placaVehiculo: formData.placaVehiculo
         };
-        
+
         localStorage.setItem("confirmacion", JSON.stringify(confirmacion));
         navigate("/respuesta", { state: confirmacion });
       } else {
-        throw new Error(response.data.error || "Error en la respuesta del servidor");
+        throw new Error(
+          response.data.error || "Error en la respuesta del servidor"
+        );
       }
     } catch (error) {
       console.error("Error al enviar confirmación:", error);
       setError(
         error.response?.data?.error ||
-        error.message ||
-        "Ocurrió un error al enviar tu confirmación. Por favor intenta nuevamente."
+          error.message ||
+          "Ocurrió un error al enviar tu confirmación. Por favor intenta nuevamente."
       );
     } finally {
       setLoading(false);
@@ -88,7 +97,7 @@ const ConfirmacionForm = () => {
         required
         minLength="3"
       />
-      
+
       <input
         type="email"
         name="email"
@@ -136,11 +145,16 @@ const ConfirmacionForm = () => {
         </label>
       </div>
 
-      <button 
-        type="submit" 
-        className="boton-confirmar"
-        disabled={loading}
-      >
+      <input
+        type="text"
+        name="placaVehiculo"
+        placeholder="Placa del vehículo"
+        value={formData.placaVehiculo}
+        onChange={handleChange}
+        maxLength="20"
+      />
+
+      <button type="submit" className="boton-confirmar" disabled={loading}>
         {loading ? "Enviando..." : "Confirmar"}
       </button>
     </form>
