@@ -1,7 +1,7 @@
 import { useLocation } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import IMGLugar from "../assets/regalos.png";
-import osoboy from "../assets/lion2.jpg";
+import Leon from "../assets/leoncorona.jpeg";
 // import osogirl from "../assets/osogirl.jpg";
 import musica from "../assets/musica.mp3";
 
@@ -97,10 +97,10 @@ const Respuesta = () => {
 
           <div className="detalles-evento" data-aos="fade-up">
           <p>
-              <strong>Juan Ignacio</strong>💙 te espera
+              Acompáñanos al Baby Shower de<strong>Juan Ignacio</strong>💙 
             </p>
             <img
-              src={osoboy}
+              src={Leon}
               alt="Niño"
               className="imagen-lugar"
               data-aos="zoom-in"
@@ -114,7 +114,7 @@ const Respuesta = () => {
               className="imagen-lugar"
               data-aos="zoom-in"
             /> */}
-            <p>🎁 Colaboración: regalo para bebe</p>
+            <p>🎁 Contribución: un regalo para bebe</p>
             <p>¡muchas gracias!</p>
             <img
             src={IMGLugar}
