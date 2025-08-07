@@ -97,7 +97,7 @@ const Respuesta = () => {
 
           <div className="detalles-evento" data-aos="fade-up">
           <p>
-              Acompáñanos al Baby Shower de<strong>Juan Ignacio</strong>💙 
+              Acompáñanos al Baby Shower de <strong>Juan Ignacio</strong>💙 
             </p>
             <img
               src={Leon}
