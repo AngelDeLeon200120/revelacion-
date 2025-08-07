@@ -114,7 +114,7 @@ const Respuesta = () => {
               className="imagen-lugar"
               data-aos="zoom-in"
             /> */}
-            <p>🎁 Contribución: un regalo para bebe</p>
+            <p>🎁 Contribución: un regalo para bebé</p>
             <p>¡muchas gracias!</p>
             <img
             src={IMGLugar}
