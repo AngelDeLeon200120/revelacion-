@@ -2,9 +2,7 @@ import { useLocation } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import IMGLugar from "../assets/regalos.png";
 import Leon from "../assets/leoncorona.jpeg";
-// import osogirl from "../assets/osogirl.jpg";
 import musica from "../assets/musica.mp3";
-
 import AOS from "aos";
 import "aos/dist/aos.css";
 import "../styles/Respuesta.css";
@@ -16,54 +14,161 @@ const Respuesta = () => {
   const audioRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [tiempoRestante, setTiempoRestante] = useState({
-    dias: 0,
-    horas: 0,
-    minutos: 0,
-    segundos: 0,
-    terminado: false,
+    dias: 0, horas: 0, minutos: 0, segundos: 0, terminado: false,
   });
 
-  useEffect(() => {
-    AOS.init({ duration: 1000 });
+  // Refs GSAP
+  const heroImgRef = useRef(null);
+  const heroSectionRef = useRef(null);
+  const leonImgRef = useRef(null);
+  const leonSectionRef = useRef(null);
+  const lugarImgRef = useRef(null);
+  const lugarSectionRef = useRef(null);
+  const contadorRef = useRef(null);
+  const gsapLoaded = useRef(false);
 
-    // Configuración del contador
+  useEffect(() => {
+    AOS.init({ duration: 900 });
+
     const ahora = new Date();
     const añoActual = ahora.getFullYear();
-    const evento = new Date(añoActual, 7, 31); // 8 de junio
+    const evento = new Date(añoActual, 7, 31);
     if (ahora > evento) evento.setFullYear(añoActual + 1);
 
     const actualizarContador = () => {
       const ahora = new Date();
-      const diferencia = evento - ahora;
-      if (diferencia <= 0) {
-        setTiempoRestante((prev) => ({ ...prev, terminado: true }));
-        return;
-      }
-      const segundos = Math.floor(diferencia / 1000);
-      const minutos = Math.floor(segundos / 60);
-      const horas = Math.floor(minutos / 60);
-      const dias = Math.floor(horas / 24);
-      setTiempoRestante({
-        dias,
-        horas: horas % 24,
-        minutos: minutos % 60,
-        segundos: segundos % 60,
-        terminado: false,
-      });
+      const dif = evento - ahora;
+      if (dif <= 0) { setTiempoRestante((p) => ({ ...p, terminado: true })); return; }
+      const s = Math.floor(dif / 1000), m = Math.floor(s / 60), h = Math.floor(m / 60), d = Math.floor(h / 24);
+      setTiempoRestante({ dias: d, horas: h % 24, minutos: m % 60, segundos: s % 60, terminado: false });
     };
 
     actualizarContador();
-    const intervalo = setInterval(actualizarContador, 1000);
-    return () => clearInterval(intervalo);
+    const iv = setInterval(actualizarContador, 1000);
+    return () => clearInterval(iv);
   }, []);
+
+  // GSAP
+useEffect(() => {
+  if (gsapLoaded.current || asistencia !== "true") return;
+
+  const init = async () => {
+    let gsap, ScrollTrigger;
+
+    try {
+      const g = await import("gsap");
+      const st = await import("gsap/ScrollTrigger");
+      gsap = g.gsap || g.default;
+      ScrollTrigger = st.ScrollTrigger;
+    } catch {
+      await loadGSAPFromCDN();
+      gsap = window.gsap;
+      ScrollTrigger = window.ScrollTrigger;
+    }
+
+    if (!gsap) {
+      console.warn("GSAP no cargó correctamente");
+      gsapLoaded.current = true;
+      return;
+    }
+
+    if (ScrollTrigger) {
+      gsap.registerPlugin(ScrollTrigger);
+    }
+
+    window.gsap = gsap;
+    gsapLoaded.current = true;
+
+    // === ANIMACIONES ===
+
+    // Hero parallax
+    if (heroImgRef.current && heroSectionRef.current) {
+      gsap.to(heroImgRef.current, {
+        scale: 1.15,
+        y: 60,
+        ease: "none",
+        scrollTrigger: {
+          trigger: heroSectionRef.current,
+          start: "top top",
+          end: "bottom top",
+          scrub: 1.5,
+        },
+      });
+    }
+
+    // León image
+    if (leonImgRef.current && leonSectionRef.current) {
+      gsap.fromTo(
+        leonImgRef.current,
+        { scale: 0.9, opacity: 0.5 },
+        {
+          scale: 1.05,
+          opacity: 1,
+          ease: "none",
+          scrollTrigger: {
+            trigger: leonSectionRef.current,
+            start: "top 80%",
+            end: "center 40%",
+            scrub: 1,
+          },
+        }
+      );
+    }
+
+    // Regalos image
+    if (lugarImgRef.current && lugarSectionRef.current) {
+      gsap.fromTo(
+        lugarImgRef.current,
+        { y: 40, scale: 0.95 },
+        {
+          y: -40,
+          scale: 1,
+          ease: "none",
+          scrollTrigger: {
+            trigger: lugarSectionRef.current,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: 1.2,
+          },
+        }
+      );
+    }
+
+    // === CONTADOR - ANIMACIÓN FIJA ===
+    if (contadorRef.current) {
+      const boxes = contadorRef.current.querySelectorAll(".r-contador-box");
+      if (boxes.length > 0) {
+        gsap.fromTo(
+          boxes,
+          { 
+            opacity: 0, 
+            y: 40, 
+            scale: 0.7 
+          },
+          { 
+            opacity: 1, 
+            y: 0, 
+            scale: 1, 
+            stagger: 0.1, 
+            duration: 0.8, 
+            ease: "back.out(1.4)",
+            scrollTrigger: {
+              trigger: contadorRef.current,
+              start: "top 85%",
+            },
+          }
+        );
+      }
+    }
+  };
+
+  init();
+}, [asistencia]);
 
   const toggleAudio = () => {
     if (!audioRef.current) return;
-    if (isPlaying) {
-      audioRef.current.pause();
-    } else {
-      audioRef.current.play();
-    }
+    if (isPlaying) audioRef.current.pause();
+    else audioRef.current.play();
     setIsPlaying(!isPlaying);
   };
 
@@ -75,135 +180,138 @@ const Respuesta = () => {
     );
   }
 
+  if (asistencia !== "true") {
+    return (
+      <div className="respuesta-no-asiste">
+        <div className="no-asiste-card" data-aos="fade-up">
+          <div className="no-asiste-emoji">😢</div>
+          <h2>Lamentamos que no puedas asistir, {nombre}</h2>
+          <p>Gracias por hacérnoslo saber. ¡Te tendremos presente en espíritu!</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="respuesta-container">
+    <div className="respuesta-wrapper">
       <audio ref={audioRef} src={musica} loop />
-      <button className="btn-musica" onClick={toggleAudio}>
+
+      <button className="btn-musica" onClick={toggleAudio} aria-label="Música">
         {isPlaying ? "🔊" : "🔈"}
       </button>
 
-      {asistencia === "true" ? (
-        <>
-          <h2 className="titulo-confirmado" data-aos="fade-down">
-            🎉 ¡Gracias {nombre} por confirmar!
-          </h2>
-          
+      {/* ── HERO ── */}
+      <section className="r-hero-section" ref={heroSectionRef}>
+        <div className="r-hero-img-wrap" ref={heroImgRef}>
+          <img src={Leon} alt="Juan Ignacio" className="r-hero-img" />
+          <div className="r-hero-overlay" />
+        </div>
+        <div className="r-hero-content" data-aos="fade-up">
+          <p className="r-hero-eyebrow">¡Muchas gracias!</p>
+          <h1 className="r-hero-title">
+            🎉 {nombre}
+          </h1>
+          <p className="r-hero-sub">Tu asistencia ha sido confirmada con amor 💙</p>
+        </div>
+      </section>
 
-          {tiempoRestante.terminado && (
-            <div className="texto-final animate-pulse" data-aos="zoom-in">
-              ¡Hoy es el gran día! 🎉
-            </div>
-          )}
-
-          <div className="detalles-evento" data-aos="fade-up">
-          <p>
-              Acompáñanos al Baby Shower de <strong>Juan Ignacio</strong>💙 
+      {/* ── DETALLES DEL EVENTO ── */}
+      <section className="r-section-detalles">
+        <div className="r-detalles-grid">
+          <div className="r-detalles-text" data-aos="fade-right">
+            <h2 className="r-section-title">El gran día 💙</h2>
+            <p className="r-body-text">
+              Acompáñanos al Baby Shower de <strong>Juan Ignacio</strong>
             </p>
-            <img
-              src={Leon}
-              alt="Niño"
-              className="imagen-lugar"
-              data-aos="zoom-in"
-            />
-            {/* <p>
-              💖 Si crees que es <strong>princesa</strong>, vístete de rosado
-            </p>
-            <img
-              src={osogirl}
-              alt="Niña"
-              className="imagen-lugar"
-              data-aos="zoom-in"
-            /> */}
-            <p>🎁 Contribución: un regalo para bebé</p>
-            <p>¡muchas gracias!</p>
-            <img
-            src={IMGLugar}
-            alt="Lugar del evento"
-            className="imagen-lugar"
-            data-aos="zoom-in"
-          />
-            <p
-              style={{
-                fontSize: "1.5rem",
-                lineHeight: "1.6",
-                textAlign: "center",
-                color: "#444",
-              }}
-            >
-              🎉 <strong>¡Estás cordialmente invitado!</strong>
-              <br />
-              📅 <strong>Domingo 31 de Agosto</strong> a las{" "}
-              <strong>2:00 PM</strong>
-              <br />
-              📍 <strong>Salón Celebraciones</strong>, Apartamentos Cendana
-              <br />
-              <em>(5ta. Av. 08-06, Zona 9)</em>
-              <br />
-              👶 Este evento especial está a nombre de{" "}
-              <strong>Sara De León</strong>
-              <br />
-              💖 ¡Será un honor contar con tu presencia!
-            </p>
-
-          </div>
-
-          <p className="detalle-asistencia" data-aos="fade-up">
-            Asistirás con <strong>{cantidad}</strong> persona(s). Aquí tienes la
-            ubicación:
-          </p>
-          <ul className="links-mapas" data-aos="zoom-in">
-            <li>
-              <a
-                href="https://www.google.com/maps/place/Apartamentos+Cendana/@14.6070273,-90.5240103,17z/data=!4m16!1m9!4m8!1m0!1m6!1m2!1s0x8589a3ada5f98ed9:0x4848a3521f81dd2d!2sCdad.+de+Guatemala+01009!2m2!1d-90.5213375!2d14.607005!3m5!1s0x8589a3ada5f98ed9:0x4848a3521f81dd2d!8m2!3d14.6070221!4d-90.5214354!16s%2Fg%2F11lkkbklz_"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                📍 Google Maps
-              </a>
-            </li>
-            <li>
-              <a
-                href="https://www.waze.com/es-419/live-map/directions?locale=es-419&utm_campaign=share_drive&utm_source=waze_app&utm_medium=undefined&to=ll.14.5293312%2C-90.5773056&from=place.w.176619666.1766065589.28314770"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                🚗 Waze
-              </a>
-            </li>
-          </ul>
-
-          <div className="contador-grid" data-aos="fade-up">
-            {["Días", "Horas", "Minutos", "Segundos"].map((etiqueta, i) => (
-              <div className="contador-box" key={etiqueta}>
-                <div className="valor">
-                  {String(
-                    [
-                      tiempoRestante.dias,
-                      tiempoRestante.horas,
-                      tiempoRestante.minutos,
-                      tiempoRestante.segundos,
-                    ][i]
-                  ).padStart(2, "0")}
-                </div>
-                <div className="etiqueta">{etiqueta}</div>
+            <div className="r-info-box">
+              <div className="r-info-item">
+                <span>📅</span>
+                <span><strong>Domingo 31 de Agosto</strong></span>
               </div>
-            ))}
+              <div className="r-info-item">
+                <span>🕑</span>
+                <span><strong>2:00 PM</strong></span>
+              </div>
+              <div className="r-info-item">
+                <span>📍</span>
+                <span>Salón Celebraciones, Apartamentos Cendana<br /><em>5ta. Av. 08-06, Zona 9</em></span>
+              </div>
+              <div className="r-info-item">
+                <span>👥</span>
+                <span>Asistirás con <strong>{cantidad}</strong> persona(s)</span>
+              </div>
+            </div>
+            <div className="r-mapas">
+              <a href="https://www.google.com/maps/place/Apartamentos+Cendana/@14.6070273,-90.5240103,17z" target="_blank" rel="noopener noreferrer" className="r-mapa-btn">📍 Google Maps</a>
+              <a href="https://www.waze.com/es-419/live-map/directions?to=ll.14.5293312%2C-90.5773056" target="_blank" rel="noopener noreferrer" className="r-mapa-btn waze">🚗 Waze</a>
+            </div>
           </div>
 
-          <p className="gmail">Recuerda revisar tu correo</p>
-        </>
-      ) : (
-        <>
-          <h2 className="titulo-noasiste" data-aos="fade-down">
-            😢 Lamentamos que no puedas asistir, {nombre}
-          </h2>
-          <p className="detalle-noasiste" data-aos="fade-up">
-            Gracias por hacérnoslo saber. ¡Te tendremos presente en espíritu!
-          </p>
-        </>
-      )}
+          <div className="r-leon-wrap" ref={leonSectionRef} data-aos="fade-left">
+            <div className="r-leon-overflow">
+              <img src={Leon} alt="Juan Ignacio" className="r-leon-img" ref={leonImgRef} />
+            </div>
+            <div className="r-leon-deco" />
+          </div>
+        </div>
+      </section>
+
+      {/* ── CONTADOR ── */}
+      <section className="r-section-contador">
+        <div className="r-contador-bg" />
+        <h2 className="r-contador-title" data-aos="fade-up">Faltan solo...</h2>
+        <div className="r-contador-grid" ref={contadorRef}>
+          {["Días","Horas","Minutos","Segundos"].map((e, i) => (
+            <div className="r-contador-box" key={e}>
+              <div className="r-valor">
+                {String([tiempoRestante.dias,tiempoRestante.horas,tiempoRestante.minutos,tiempoRestante.segundos][i]).padStart(2,"0")}
+              </div>
+              <div className="r-etiqueta">{e}</div>
+            </div>
+          ))}
+        </div>
+        {tiempoRestante.terminado && (
+          <div className="r-texto-final">¡Hoy es el gran día! 🎉</div>
+        )}
+      </section>
+
+      {/* ── REGALOS ── */}
+      <section className="r-section-regalos" ref={lugarSectionRef}>
+        <div className="r-regalos-content">
+          <h2 className="r-section-title" data-aos="fade-up">Contribución 🎁</h2>
+          <p className="r-body-text" data-aos="fade-up">Un regalo para el bebé será suficiente. ¡Muchas gracias!</p>
+          <div className="r-regalos-img-wrap" data-aos="fade-up">
+            <div className="r-img-overflow">
+              <img src={IMGLugar} alt="Regalos" className="r-regalos-img" ref={lugarImgRef} />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── CORREO ── */}
+      <section className="r-section-correo" data-aos="fade-up">
+        <div className="r-correo-card">
+          <span className="r-correo-icon">📧</span>
+          <p className="r-correo-text">Recuerda revisar tu correo, te enviamos los detalles.</p>
+        </div>
+      </section>
     </div>
   );
 };
+
+function loadGSAPFromCDN() {
+  return new Promise((resolve) => {
+    if (window.gsap && window.ScrollTrigger) return resolve();
+    const s1 = document.createElement("script");
+    s1.src = "https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js";
+    s1.onload = () => {
+      const s2 = document.createElement("script");
+      s2.src = "https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js";
+      s2.onload = resolve;
+      document.head.appendChild(s2);
+    };
+    document.head.appendChild(s1);
+  });
+}
 
 export default Respuesta;

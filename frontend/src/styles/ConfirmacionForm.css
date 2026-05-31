@@ -1,143 +1,427 @@
-/* Fuente general */
-form {
-    background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
-    padding: 2rem;
-    max-width: 600px;
-    margin: 2rem auto;
-    border-radius: 20px;
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
-    font-family: "Segoe UI", "Poppins", sans-serif;
-    transition: all 0.3s ease-in-out;
-  }
-  
-  h2 {
-    text-align: center;
-    color: #333;
-    font-size: 1.8rem;
-    margin-bottom: 1.5rem;
-  }
-  
-  input[type="text"],
-  input[type="email"],
-  input[type="number"] {
-    width: 100%;
-    padding: 14px;
-    margin-bottom: 1.2rem;
-    border: 1px solid #ddd;
-    border-radius: 12px;
-    font-size: 1rem;
-    transition: box-shadow 0.2s ease-in-out;
-  }
-  
-  input:focus {
-    outline: none;
-    box-shadow: 0 0 0 3px rgba(27, 148, 247, 0.2);
-  }
-  
-  .radio-label {
-    display: block;
-    margin-bottom: 0.8rem;
-    font-weight: 500;
-    color: #444;
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:wght@300;400;600&display=swap');
+
+/* ══════════════════════════════════════
+   VARIABLES
+══════════════════════════════════════ */
+:root {
+  --azul: #6db6f6;
+  --azul-oscuro: #3a8fd4;
+  --azul-noche: #1a4a72;
+  --azul-claro: #b7d8f4;
+  --blanco: #fafcff;
+  --crema: #fdf9f4;
+  --rosa: #ea6082;
+  --texto: #2c3e50;
+  --texto-suave: #7f8c8d;
+  --borde: #dde8f5;
+  --sombra: 0 20px 60px rgba(26, 74, 114, 0.13);
+  --sombra-hover: 0 30px 80px rgba(26, 74, 114, 0.22);
+}
+
+/* ══════════════════════════════════════
+   PÁGINA WRAPPER
+══════════════════════════════════════ */
+.cf-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+  background: linear-gradient(160deg, var(--azul-claro) 0%, #dceeff 50%, #f0f8ff 100%);
+  position: relative;
+  overflow: hidden;
+  font-family: 'Cormorant Garamond', serif;
+}
+
+/* ── Burbujas decorativas ── */
+.cf-bubbles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.cf-bubble {
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.35);
+  backdrop-filter: blur(2px);
+}
+
+.cf-bubble--1 { width: 300px; height: 300px; top: -80px; left: -80px; animation: floatBubble 8s ease-in-out infinite; }
+.cf-bubble--2 { width: 180px; height: 180px; top: 20%; right: -50px; animation: floatBubble 10s ease-in-out infinite 1s; }
+.cf-bubble--3 { width: 120px; height: 120px; bottom: 15%; left: 5%; animation: floatBubble 7s ease-in-out infinite 2s; }
+.cf-bubble--4 { width: 80px;  height: 80px;  top: 45%; left: 3%; animation: floatBubble 6s ease-in-out infinite 0.5s; }
+.cf-bubble--5 { width: 220px; height: 220px; bottom: -60px; right: -60px; animation: floatBubble 9s ease-in-out infinite 3s; }
+.cf-bubble--6 { width: 60px;  height: 60px;  top: 10%; left: 30%; animation: floatBubble 5s ease-in-out infinite 1.5s; }
+
+@keyframes floatBubble {
+  0%, 100% { transform: translateY(0) scale(1); opacity: 0.6; }
+  50% { transform: translateY(-20px) scale(1.04); opacity: 0.9; }
+}
+
+/* ══════════════════════════════════════
+   FORMULARIO
+══════════════════════════════════════ */
+.cf-form {
+  background: white;
+  border-radius: 2rem;
+  box-shadow: var(--sombra);
+  padding: 3rem 2.5rem;
+  width: 100%;
+  max-width: 520px;
+  position: relative;
+  will-change: transform, opacity;
+  /* Línea decorativa superior */
+  border-top: 4px solid transparent;
+  background-image: linear-gradient(white, white),
+    linear-gradient(90deg, var(--rosa), var(--azul));
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+}
+
+/* ── Encabezado ── */
+.cf-header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.cf-header-icon {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+  animation: latido 1.8s ease-in-out infinite;
+  display: block;
+}
+
+@keyframes latido {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.18); }
+}
+
+.cf-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.8rem, 5vw, 2.4rem);
+  font-weight: 700;
+  color: var(--azul-noche);
+  margin: 0 0 0.4rem;
+  line-height: 1.1;
+}
+
+.cf-subtitle {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.95rem;
+  color: var(--texto-suave);
+  letter-spacing: 0.06em;
+  margin: 0;
+}
+
+/* ── Error ── */
+.cf-error {
+  background: #fff0f3;
+  border: 1px solid #ffc0cb;
+  border-radius: 1rem;
+  padding: 0.9rem 1.2rem;
+  color: #c0392b;
+  font-size: 0.95rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  line-height: 1.5;
+}
+
+.cf-error-icon { flex-shrink: 0; font-size: 1.1rem; }
+
+/* ── Campos ── */
+.cf-field {
+  margin-bottom: 1.6rem;
+}
+
+.cf-label {
+  display: block;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--azul-noche);
+  margin-bottom: 0.45rem;
+  letter-spacing: 0.02em;
+}
+
+.cf-optional {
+  font-weight: 300;
+  color: var(--texto-suave);
+  font-size: 0.85rem;
+}
+
+.cf-hint {
+  font-size: 0.82rem;
+  color: var(--texto-suave);
+  margin: -0.2rem 0 0.5rem;
+  font-style: italic;
+}
+
+/* ── Input con ícono ── */
+.cf-input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.cf-input-icon {
+  position: absolute;
+  left: 1rem;
+  font-size: 1rem;
+  pointer-events: none;
+  user-select: none;
+}
+
+.cf-input {
+  width: 100%;
+  padding: 0.85rem 1rem 0.85rem 2.8rem;
+  border: 1.5px solid var(--borde);
+  border-radius: 0.9rem;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.05rem;
+  color: var(--texto);
+  background: var(--blanco);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.cf-input::placeholder {
+  color: #b0bec5;
+  font-style: italic;
+}
+
+.cf-input:focus {
+  outline: none;
+  border-color: var(--azul-oscuro);
+  box-shadow: 0 0 0 3.5px rgba(58, 143, 212, 0.18);
+  background: white;
+}
+
+/* ── Contador de cantidad ── */
+.cf-cantidad-wrap {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.cf-cantidad-btn {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 1.5px solid var(--borde);
+  background: var(--blanco);
+  color: var(--azul-noche);
+  font-size: 1.4rem;
+  font-weight: 300;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.cf-cantidad-btn:hover {
+  background: var(--azul-claro);
+  border-color: var(--azul-oscuro);
+  transform: scale(1.1);
+}
+
+.cf-cantidad-btn:active { transform: scale(0.95); }
+
+.cf-input--cantidad {
+  text-align: center;
+  padding: 0.85rem 0.5rem;
+  font-size: 1.3rem;
+  font-weight: 600;
+  max-width: 80px;
+  border-radius: 0.9rem;
+}
+
+/* ocultar flechas nativas del number input */
+.cf-input--cantidad::-webkit-inner-spin-button,
+.cf-input--cantidad::-webkit-outer-spin-button { -webkit-appearance: none; }
+.cf-input--cantidad { -moz-appearance: textfield; }
+
+/* ── Radio cards ── */
+.cf-radio-group {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.cf-radio-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 1.2rem 0.8rem;
+  border: 2px solid var(--borde);
+  border-radius: 1.2rem;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+  background: var(--blanco);
+  user-select: none;
+}
+
+.cf-radio-card:hover {
+  border-color: var(--azul);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(26, 74, 114, 0.1);
+}
+
+.cf-radio-card--active {
+  border-color: var(--azul-oscuro);
+  background: linear-gradient(135deg, #e8f4ff, #dceeff);
+  box-shadow: 0 6px 18px rgba(26, 74, 114, 0.15);
+  transform: translateY(-2px);
+}
+
+.cf-radio-card--no.cf-radio-card--active {
+  border-color: #e57397;
+  background: linear-gradient(135deg, #fff0f4, #ffe4ec);
+  box-shadow: 0 6px 18px rgba(234, 96, 130, 0.15);
+}
+
+.cf-radio-hidden {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+}
+
+.cf-radio-emoji {
+  font-size: 1.8rem;
+  transition: transform 0.25s ease;
+}
+
+.cf-radio-card:hover .cf-radio-emoji,
+.cf-radio-card--active .cf-radio-emoji {
+  transform: scale(1.2);
+}
+
+.cf-radio-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--azul-noche);
+  text-align: center;
+}
+
+/* ── Botón submit ── */
+.cf-btn {
+  width: 100%;
+  padding: 1rem 2rem;
+  margin-top: 0.5rem;
+  border: none;
+  border-radius: 999px;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.15rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: white;
+  background: linear-gradient(90deg, var(--rosa) 0%, var(--azul-oscuro) 100%);
+  background-size: 200% 100%;
+  cursor: pointer;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, background-position 0.4s ease;
+  box-shadow: 0 8px 25px rgba(26, 74, 114, 0.3);
+  will-change: transform;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Shimmer en hover */
+.cf-btn::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent 20%, rgba(255,255,255,0.18) 50%, transparent 80%);
+  transform: translateX(-100%);
+  transition: transform 0.5s ease;
+}
+
+.cf-btn:hover::after { transform: translateX(100%); }
+
+.cf-btn:hover:not(:disabled) {
+  transform: translateY(-3px);
+  box-shadow: 0 14px 35px rgba(26, 74, 114, 0.4);
+  background-position: 100% 0;
+}
+
+.cf-btn:active:not(:disabled) { transform: translateY(-1px); }
+
+.cf-btn:disabled {
+  opacity: 0.75;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.cf-btn--loading {
+  background: linear-gradient(90deg, #8cb8e0, #7fadd4);
+}
+
+.cf-btn-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+}
+
+/* ── Spinner ── */
+.cf-spinner {
+  width: 18px;
+  height: 18px;
+  border: 2.5px solid rgba(255,255,255,0.4);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  flex-shrink: 0;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ══════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════ */
+@media (max-width: 480px) {
+  .cf-form {
+    padding: 2rem 1.5rem;
+    border-radius: 1.5rem;
   }
 
-  .radio-text-familia{
-    font-size: 12px;
-    display: block;
-    margin-bottom: 0.8rem;
-    font-weight: 500;
-    color: #787676;
+  .cf-title { font-size: 1.7rem; }
+
+  .cf-radio-group {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.7rem;
   }
-  
-  input[type="radio"] {
-    margin-right: 8px;
-    accent-color: #ea6082;
-  }
-  
-  /* Contenedor de radios */
-  .radio-container {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 1.5rem;
-    flex-wrap: wrap;
-  }
-  
-  .boton-confirmar {
-    width: 100%;
-    background: linear-gradient(90deg, #ea6082, #1b94f7);
-    color: white;
-    padding: 14px;
-    font-size: 1rem;
-    font-weight: bold;
-    border: none;
-    border-radius: 14px;
-    cursor: pointer;
-    transition: transform 0.2s, background 0.3s ease;
-  }
-  
-  .boton-confirmar:hover {
-    transform: scale(1.02);
-    background: linear-gradient(90deg, #ec6c8d, #3fa3fc);
-  }
-  
-  .success-message {
-    background-color: #ffffff;
-    padding: 2rem;
-    max-width: 600px;
-    margin: 2rem auto;
-    border-radius: 20px;
-    text-align: center;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
-    font-family: "Segoe UI", "Poppins", sans-serif;
-  }
-  
-  .success-message h2 {
-    color: #444;
-    margin-bottom: 1rem;
-    font-size: 1.6rem;
-  }
-  
-  .success-message p {
-    margin-bottom: 1rem;
-    color: #555;
-    font-size: 1rem;
-  }
-  
-  .success-message ul {
-    list-style: none;
-    padding: 0;
-    margin-top: 1rem;
-  }
-  
-  .success-message li {
-    margin: 0.5rem 0;
-  }
-  
-  .success-message a {
-    color: #1b94f7;
-    text-decoration: none;
-    font-weight: bold;
-  }
-  
-  .success-message a:hover {
-    text-decoration: underline;
-  }
-  
-  /* Responsive */
-  @media screen and (max-width: 480px) {
-    form,
-    .success-message {
-      padding: 1.5rem;
-      margin: 1rem;
-    }
-  
-    h2 {
-      font-size: 1.5rem;
-    }
-  
-    .boton-confirmar {
-      font-size: 0.95rem;
-      padding: 12px;
-    }
-  }
-  
+
+  .cf-radio-card { padding: 1rem 0.5rem; }
+  .cf-radio-emoji { font-size: 1.5rem; }
+  .cf-radio-text { font-size: 0.9rem; }
+}
+
+@media (max-width: 360px) {
+  .cf-radio-group { grid-template-columns: 1fr; }
+}
+
+/* Forzar visibilidad si GSAP falla */
+.cf-form,
+.cf-field {
+  opacity: 1 !important;
+  transform: none !important;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+/* Solo aplicar animaciones cuando GSAP esté listo */
+.gsap-loaded .cf-form,
+.gsap-loaded .cf-field {
+  opacity: 0; /* GSAP se encargará de animarlo */
+}
