@@ -17,7 +17,6 @@ const Respuesta = () => {
     dias: 0, horas: 0, minutos: 0, segundos: 0, terminado: false,
   });
 
-  // Refs GSAP
   const heroImgRef = useRef(null);
   const heroSectionRef = useRef(null);
   const leonImgRef = useRef(null);
@@ -30,10 +29,8 @@ const Respuesta = () => {
   useEffect(() => {
     AOS.init({ duration: 900 });
 
-    const ahora = new Date();
-    const añoActual = ahora.getFullYear();
-    const evento = new Date(añoActual, 7, 31);
-    if (ahora > evento) evento.setFullYear(añoActual + 1);
+    // 27 de septiembre de 2026 a las 3:30 PM
+    const evento = new Date(2026, 8, 27, 15, 30, 0);
 
     const actualizarContador = () => {
       const ahora = new Date();
@@ -48,122 +45,58 @@ const Respuesta = () => {
     return () => clearInterval(iv);
   }, []);
 
-  // GSAP
-useEffect(() => {
-  if (gsapLoaded.current || asistencia !== "true") return;
+  useEffect(() => {
+    if (gsapLoaded.current || asistencia !== "true") return;
 
-  const init = async () => {
-    let gsap, ScrollTrigger;
-
-    try {
-      const g = await import("gsap");
-      const st = await import("gsap/ScrollTrigger");
-      gsap = g.gsap || g.default;
-      ScrollTrigger = st.ScrollTrigger;
-    } catch {
-      await loadGSAPFromCDN();
-      gsap = window.gsap;
-      ScrollTrigger = window.ScrollTrigger;
-    }
-
-    if (!gsap) {
-      console.warn("GSAP no cargó correctamente");
-      gsapLoaded.current = true;
-      return;
-    }
-
-    if (ScrollTrigger) {
-      gsap.registerPlugin(ScrollTrigger);
-    }
-
-    window.gsap = gsap;
-    gsapLoaded.current = true;
-
-    // === ANIMACIONES ===
-
-    // Hero parallax
-    if (heroImgRef.current && heroSectionRef.current) {
-      gsap.to(heroImgRef.current, {
-        scale: 1.15,
-        y: 60,
-        ease: "none",
-        scrollTrigger: {
-          trigger: heroSectionRef.current,
-          start: "top top",
-          end: "bottom top",
-          scrub: 1.5,
-        },
-      });
-    }
-
-    // León image
-    if (leonImgRef.current && leonSectionRef.current) {
-      gsap.fromTo(
-        leonImgRef.current,
-        { scale: 0.9, opacity: 0.5 },
-        {
-          scale: 1.05,
-          opacity: 1,
-          ease: "none",
-          scrollTrigger: {
-            trigger: leonSectionRef.current,
-            start: "top 80%",
-            end: "center 40%",
-            scrub: 1,
-          },
-        }
-      );
-    }
-
-    // Regalos image
-    if (lugarImgRef.current && lugarSectionRef.current) {
-      gsap.fromTo(
-        lugarImgRef.current,
-        { y: 40, scale: 0.95 },
-        {
-          y: -40,
-          scale: 1,
-          ease: "none",
-          scrollTrigger: {
-            trigger: lugarSectionRef.current,
-            start: "top bottom",
-            end: "bottom top",
-            scrub: 1.2,
-          },
-        }
-      );
-    }
-
-    // === CONTADOR - ANIMACIÓN FIJA ===
-    if (contadorRef.current) {
-      const boxes = contadorRef.current.querySelectorAll(".r-contador-box");
-      if (boxes.length > 0) {
-        gsap.fromTo(
-          boxes,
-          { 
-            opacity: 0, 
-            y: 40, 
-            scale: 0.7 
-          },
-          { 
-            opacity: 1, 
-            y: 0, 
-            scale: 1, 
-            stagger: 0.1, 
-            duration: 0.8, 
-            ease: "back.out(1.4)",
-            scrollTrigger: {
-              trigger: contadorRef.current,
-              start: "top 85%",
-            },
-          }
-        );
+    const init = async () => {
+      let gsap, ScrollTrigger;
+      try {
+        const g = await import("gsap");
+        const st = await import("gsap/ScrollTrigger");
+        gsap = g.gsap || g.default;
+        ScrollTrigger = st.ScrollTrigger;
+      } catch {
+        await loadGSAPFromCDN();
+        gsap = window.gsap;
+        ScrollTrigger = window.ScrollTrigger;
       }
-    }
-  };
+      if (!gsap) { gsapLoaded.current = true; return; }
+      if (ScrollTrigger) gsap.registerPlugin(ScrollTrigger);
+      window.gsap = gsap;
+      gsapLoaded.current = true;
 
-  init();
-}, [asistencia]);
+      if (heroImgRef.current && heroSectionRef.current) {
+        gsap.to(heroImgRef.current, {
+          scale: 1.15, y: 60, ease: "none",
+          scrollTrigger: { trigger: heroSectionRef.current, start: "top top", end: "bottom top", scrub: 1.5 },
+        });
+      }
+      if (leonImgRef.current && leonSectionRef.current) {
+        gsap.fromTo(leonImgRef.current, { scale: 0.9, opacity: 0.5 }, {
+          scale: 1.05, opacity: 1, ease: "none",
+          scrollTrigger: { trigger: leonSectionRef.current, start: "top 80%", end: "center 40%", scrub: 1 },
+        });
+      }
+      if (lugarImgRef.current && lugarSectionRef.current) {
+        gsap.fromTo(lugarImgRef.current, { y: 40, scale: 0.95 }, {
+          y: -40, scale: 1, ease: "none",
+          scrollTrigger: { trigger: lugarSectionRef.current, start: "top bottom", end: "bottom top", scrub: 1.2 },
+        });
+      }
+      if (contadorRef.current) {
+        const boxes = contadorRef.current.querySelectorAll(".r-contador-box");
+        if (boxes.length > 0) {
+          gsap.fromTo(boxes,
+            { opacity: 0, y: 40, scale: 0.7 },
+            { opacity: 1, y: 0, scale: 1, stagger: 0.1, duration: 0.8, ease: "back.out(1.4)",
+              scrollTrigger: { trigger: contadorRef.current, start: "top 85%" } }
+          );
+        }
+      }
+    };
+
+    init();
+  }, [asistencia]);
 
   const toggleAudio = () => {
     if (!audioRef.current) return;
@@ -173,11 +106,7 @@ useEffect(() => {
   };
 
   if (!nombre) {
-    return (
-      <p className="acceso-denegado">
-        Acceso no válido. Por favor confirma desde el formulario.
-      </p>
-    );
+    return <p className="acceso-denegado">Acceso no válido. Por favor confirma desde el formulario.</p>;
   }
 
   if (asistencia !== "true") {
@@ -195,7 +124,6 @@ useEffect(() => {
   return (
     <div className="respuesta-wrapper">
       <audio ref={audioRef} src={musica} loop />
-
       <button className="btn-musica" onClick={toggleAudio} aria-label="Música">
         {isPlaying ? "🔊" : "🔈"}
       </button>
@@ -207,34 +135,32 @@ useEffect(() => {
           <div className="r-hero-overlay" />
         </div>
         <div className="r-hero-content" data-aos="fade-up">
-          <p className="r-hero-eyebrow">¡Muchas gracias!</p>
-          <h1 className="r-hero-title">
-            🎉 {nombre}
-          </h1>
-          <p className="r-hero-sub">Tu asistencia ha sido confirmada con amor 💙</p>
+          <p className="r-hero-eyebrow">¡Muchas gracias, {nombre}!</p>
+          <h1 className="r-hero-title">🎉 ¡Nos vemos!</h1>
+          <p className="r-hero-sub">Tu asistencia ha sido confirmada con mucho amor 🎂</p>
         </div>
       </section>
 
-      {/* ── DETALLES DEL EVENTO ── */}
+      {/* ── DETALLES ── */}
       <section className="r-section-detalles">
         <div className="r-detalles-grid">
           <div className="r-detalles-text" data-aos="fade-right">
-            <h2 className="r-section-title">El gran día 💙</h2>
+            <h2 className="r-section-title">¡El gran día! 🎂</h2>
             <p className="r-body-text">
-              Acompáñanos al Baby Shower de <strong>Juan Ignacio</strong>
+              Acompáñanos a celebrar el <strong>primer cumpleaños</strong> de <strong>Juan Ignacio</strong> en un lugar muy especial 🦁
             </p>
             <div className="r-info-box">
               <div className="r-info-item">
                 <span>📅</span>
-                <span><strong>Domingo 31 de Agosto</strong></span>
+                <span><strong>Sábado 27 de Septiembre de 2026</strong></span>
               </div>
               <div className="r-info-item">
-                <span>🕑</span>
-                <span><strong>2:00 PM</strong></span>
+                <span>🕞</span>
+                <span><strong>3:30 PM</strong></span>
               </div>
               <div className="r-info-item">
                 <span>📍</span>
-                <span>Salón Celebraciones, Apartamentos Cendana<br /><em>5ta. Av. 08-06, Zona 9</em></span>
+                <span><strong>Zoológico La Aurora</strong><br /><em>Ciudad de Guatemala, Guatemala</em></span>
               </div>
               <div className="r-info-item">
                 <span>👥</span>
@@ -242,8 +168,20 @@ useEffect(() => {
               </div>
             </div>
             <div className="r-mapas">
-              <a href="https://www.google.com/maps/place/Apartamentos+Cendana/@14.6070273,-90.5240103,17z" target="_blank" rel="noopener noreferrer" className="r-mapa-btn">📍 Google Maps</a>
-              <a href="https://www.waze.com/es-419/live-map/directions?to=ll.14.5293312%2C-90.5773056" target="_blank" rel="noopener noreferrer" className="r-mapa-btn waze">🚗 Waze</a>
+              <a
+                href="https://www.google.com/maps/place/Zoológico+La+Aurora/@14.5893,-90.5724,17z"
+                target="_blank" rel="noopener noreferrer"
+                className="r-mapa-btn"
+              >
+                📍 Google Maps
+              </a>
+              <a
+                href="https://www.waze.com/es-419/live-map/directions?to=ll.14.5893%2C-90.5724"
+                target="_blank" rel="noopener noreferrer"
+                className="r-mapa-btn waze"
+              >
+                🚗 Waze
+              </a>
             </div>
           </div>
 
@@ -270,16 +208,16 @@ useEffect(() => {
             </div>
           ))}
         </div>
-        {tiempoRestante.terminado && (
-          <div className="r-texto-final">¡Hoy es el gran día! 🎉</div>
-        )}
+        {tiempoRestante.terminado && <div className="r-texto-final">¡Hoy es el gran día! 🎉</div>}
       </section>
 
       {/* ── REGALOS ── */}
       <section className="r-section-regalos" ref={lugarSectionRef}>
         <div className="r-regalos-content">
-          <h2 className="r-section-title" data-aos="fade-up">Contribución 🎁</h2>
-          <p className="r-body-text" data-aos="fade-up">Un regalo para el bebé será suficiente. ¡Muchas gracias!</p>
+          <h2 className="r-section-title" data-aos="fade-up">El regalo 🎁</h2>
+          <p className="r-body-text" data-aos="fade-up">
+            Tu presencia es el mejor regalo. Si deseas traer algo, un detalle para Juan Ignacio será más que suficiente. ¡Gracias!
+          </p>
           <div className="r-regalos-img-wrap" data-aos="fade-up">
             <div className="r-img-overflow">
               <img src={IMGLugar} alt="Regalos" className="r-regalos-img" ref={lugarImgRef} />
@@ -292,7 +230,7 @@ useEffect(() => {
       <section className="r-section-correo" data-aos="fade-up">
         <div className="r-correo-card">
           <span className="r-correo-icon">📧</span>
-          <p className="r-correo-text">Recuerda revisar tu correo, te enviamos los detalles.</p>
+          <p className="r-correo-text">Recuerda revisar tu correo, te enviamos todos los detalles.</p>
         </div>
       </section>
     </div>

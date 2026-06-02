@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Osos from "../assets/invitacion.jpg";
 import IMGLugar from "../assets/lugar.png";
 import bbeleon from "../assets/bb2.jpg";
 import Musica from "../assets/musica.mp3";
@@ -13,7 +12,6 @@ const Invitacion = () => {
     dias: 0, horas: 0, minutos: 0, segundos: 0, terminado: false,
   });
 
-  // Refs para GSAP
   const heroRef = useRef(null);
   const heroImgRef = useRef(null);
   const titleRef = useRef(null);
@@ -28,17 +26,14 @@ const Invitacion = () => {
   const floatingStarsRef = useRef(null);
   const gsapLoaded = useRef(false);
 
-  // Contador regresivo
   useEffect(() => {
     const confirmacion = localStorage.getItem("confirmacion");
     if (confirmacion) {
       navigate("/respuesta", { state: JSON.parse(confirmacion) });
     }
 
-    const ahora = new Date();
-    const añoActual = ahora.getFullYear();
-    const evento = new Date(añoActual, 7, 31);
-    if (ahora > evento) evento.setFullYear(añoActual + 1);
+    // 27 de septiembre de 2026
+    const evento = new Date(2026, 8, 27, 15, 30, 0);
 
     const actualizarContador = () => {
       const ahora = new Date();
@@ -61,13 +56,11 @@ const Invitacion = () => {
     return () => clearInterval(intervalo);
   }, [navigate]);
 
-  // Pantalla de carga
   useEffect(() => {
     const timeout = setTimeout(() => setMostrarContenido(true), 3000);
     return () => clearTimeout(timeout);
   }, []);
 
-  // Audio
   useEffect(() => {
     const audio = new Audio(Musica);
     audio.loop = true;
@@ -81,13 +74,10 @@ const Invitacion = () => {
     };
   }, []);
 
-  // GSAP init — se carga dinámicamente para no requerir cambio en package.json
-  // Si GSAP ya está en node_modules, sólo importarlo. Si no, se instala via CDN script.
   useEffect(() => {
     if (!mostrarContenido || gsapLoaded.current) return;
 
     const initGSAP = async () => {
-      // Intentar importar gsap dinámicamente
       let gsap, ScrollTrigger;
       try {
         const gsapModule = await import("gsap");
@@ -96,7 +86,6 @@ const Invitacion = () => {
         ScrollTrigger = stModule.ScrollTrigger;
         gsap.registerPlugin(ScrollTrigger);
       } catch {
-        console.warn("GSAP no encontrado, cargando desde CDN...");
         await loadGSAPFromCDN();
         gsap = window.gsap;
         ScrollTrigger = window.ScrollTrigger;
@@ -106,146 +95,53 @@ const Invitacion = () => {
       if (!gsap || !ScrollTrigger) return;
       gsapLoaded.current = true;
 
-      // ── Hero parallax: imagen se expande al hacer scroll ──
       if (heroImgRef.current) {
         gsap.to(heroImgRef.current, {
-          scale: 1.18,
-          y: 80,
-          ease: "none",
-          scrollTrigger: {
-            trigger: heroRef.current,
-            start: "top top",
-            end: "bottom top",
-            scrub: 1.2,
-          },
+          scale: 1.18, y: 80, ease: "none",
+          scrollTrigger: { trigger: heroRef.current, start: "top top", end: "bottom top", scrub: 1.2 },
         });
       }
+      if (titleRef.current) gsap.from(titleRef.current, { opacity: 0, y: 60, duration: 1.4, ease: "power3.out", delay: 0.2 });
+      if (subtitleRef.current) gsap.from(subtitleRef.current, { opacity: 0, y: 40, duration: 1.2, ease: "power3.out", delay: 0.6 });
+      if (nombreRef.current) gsap.from(nombreRef.current, { opacity: 0, scale: 0.8, duration: 1.5, ease: "elastic.out(1, 0.5)", delay: 0.9 });
 
-      // ── Título hero: sube y se desvanece ──
-      if (titleRef.current) {
-        gsap.from(titleRef.current, {
-          opacity: 0,
-          y: 60,
-          duration: 1.4,
-          ease: "power3.out",
-          delay: 0.2,
-        });
-      }
-      if (subtitleRef.current) {
-        gsap.from(subtitleRef.current, {
-          opacity: 0,
-          y: 40,
-          duration: 1.2,
-          ease: "power3.out",
-          delay: 0.6,
-        });
-      }
-      if (nombreRef.current) {
-        gsap.from(nombreRef.current, {
-          opacity: 0,
-          scale: 0.8,
-          duration: 1.5,
-          ease: "elastic.out(1, 0.5)",
-          delay: 0.9,
-        });
-      }
-
-      // ── Sección 2: imagen bb2 — parallax inverso ──
       if (img2Ref.current) {
-        gsap.fromTo(
-          img2Ref.current,
-          { scale: 1.15, y: -40 },
-          {
-            scale: 1,
-            y: 40,
-            ease: "none",
-            scrollTrigger: {
-              trigger: section2Ref.current,
-              start: "top bottom",
-              end: "bottom top",
-              scrub: 1.5,
-            },
-          }
-        );
+        gsap.fromTo(img2Ref.current, { scale: 1.15, y: -40 }, {
+          scale: 1, y: 40, ease: "none",
+          scrollTrigger: { trigger: section2Ref.current, start: "top bottom", end: "bottom top", scrub: 1.5 },
+        });
       }
-
-      // ── Texto sección 2: aparece deslizándose ──
       if (section2Ref.current) {
         gsap.from(section2Ref.current.querySelectorAll(".reveal-text"), {
-          opacity: 0,
-          x: -60,
-          stagger: 0.18,
-          duration: 1,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: section2Ref.current,
-            start: "top 75%",
-          },
+          opacity: 0, x: -60, stagger: 0.18, duration: 1, ease: "power2.out",
+          scrollTrigger: { trigger: section2Ref.current, start: "top 75%" },
         });
       }
-
-      // ── Sección 3: imagen lugar — escala al entrar ──
       if (imgLugarRef.current) {
-        gsap.fromTo(
-          imgLugarRef.current,
-          { scale: 0.88, opacity: 0.4 },
-          {
-            scale: 1,
-            opacity: 1,
-            ease: "none",
-            scrollTrigger: {
-              trigger: section3Ref.current,
-              start: "top 70%",
-              end: "center center",
-              scrub: 1,
-            },
-          }
-        );
+        gsap.fromTo(imgLugarRef.current, { scale: 0.88, opacity: 0.4 }, {
+          scale: 1, opacity: 1, ease: "none",
+          scrollTrigger: { trigger: section3Ref.current, start: "top 70%", end: "center center", scrub: 1 },
+        });
       }
-
-      // ── Contador: rebota al entrar ──
       if (contadorRef.current) {
         gsap.from(contadorRef.current.querySelectorAll(".contador-box"), {
-          opacity: 0,
-          y: 50,
-          scale: 0.7,
-          stagger: 0.12,
-          duration: 0.8,
-          ease: "back.out(1.7)",
-          scrollTrigger: {
-            trigger: contadorRef.current,
-            start: "top 80%",
-          },
+          opacity: 0, y: 50, scale: 0.7, stagger: 0.12, duration: 0.8, ease: "back.out(1.7)",
+          scrollTrigger: { trigger: contadorRef.current, start: "top 80%" },
         });
       }
-
-      // ── Botón CTA: pulso al entrar ──
       if (btnRef.current) {
         gsap.from(btnRef.current, {
-          opacity: 0,
-          scale: 0.6,
-          duration: 1,
-          ease: "elastic.out(1, 0.6)",
-          scrollTrigger: {
-            trigger: btnRef.current,
-            start: "top 85%",
-          },
+          opacity: 0, scale: 0.6, duration: 1, ease: "elastic.out(1, 0.6)",
+          scrollTrigger: { trigger: btnRef.current, start: "top 85%" },
         });
       }
-
-      // ── Estrellas flotantes en hero ──
       if (floatingStarsRef.current) {
         const stars = floatingStarsRef.current.querySelectorAll(".star");
         stars.forEach((star, i) => {
           gsap.to(star, {
-            y: `${-30 - i * 10}px`,
-            x: `${(i % 2 === 0 ? 1 : -1) * (10 + i * 5)}px`,
-            rotation: 360,
-            duration: 3 + i * 0.5,
-            repeat: -1,
-            yoyo: true,
-            ease: "sine.inOut",
-            delay: i * 0.2,
+            y: `${-30 - i * 10}px`, x: `${(i % 2 === 0 ? 1 : -1) * (10 + i * 5)}px`,
+            rotation: 360, duration: 3 + i * 0.5, repeat: -1, yoyo: true,
+            ease: "sine.inOut", delay: i * 0.2,
           });
         });
       }
@@ -259,7 +155,7 @@ const Invitacion = () => {
       <div className="pantalla-carga">
         <div className="carga-inner">
           <div className="carga-ring" />
-          <h1 className="revelacion-titulo animate-fade">Baby Shower</h1>
+          <h1 className="revelacion-titulo animate-fade">¡1 Añito! 🎂</h1>
           <p className="carga-sub animate-fade-delay">Cargando tu invitación...</p>
         </div>
       </div>
@@ -275,10 +171,9 @@ const Invitacion = () => {
           <img src={bbeleon} alt="Juan Ignacio" className="hero-bg-img" />
           <div className="hero-overlay" />
         </div>
-
         <div className="hero-content">
           <div className="floating-stars" ref={floatingStarsRef}>
-            {["💙","⭐","✨","💫","🌟","💙"].map((s, i) => (
+            {["🎂","⭐","🎈","🦁","🌟","🎉"].map((s, i) => (
               <span key={i} className="star" style={{ "--i": i }}>{s}</span>
             ))}
           </div>
@@ -286,7 +181,7 @@ const Invitacion = () => {
           <h1 className="hero-nombre" ref={nombreRef}>
             <span className="nombre-line">Juan Ignacio</span>
           </h1>
-          <p className="hero-sub" ref={subtitleRef}>Baby Shower · 31 de Agosto · 2:00 PM</p>
+          <p className="hero-sub" ref={subtitleRef}>¡Su primer añito! 🎂 · 27 de Septiembre · 3:30 PM</p>
           <div className="hero-scroll-hint">
             <span className="scroll-arrow">↓</span>
           </div>
@@ -297,35 +192,39 @@ const Invitacion = () => {
       <section className="section-detalle" ref={section2Ref}>
         <div className="detalle-grid">
           <div className="detalle-text">
-            <p className="reveal-text tag-label">💙 Con mucho amor</p>
+            <p className="reveal-text tag-label">🎈 Con mucho amor</p>
             <h2 className="reveal-text detalle-heading">
-              Nos llena de alegría
+              ¡Cumple su primer año!
             </h2>
             <p className="reveal-text detalle-body">
-              Compartir contigo que se acerca la llegada de nuestro pequeño{" "}
-              <strong>Juan Ignacio</strong>. Por eso, queremos celebrar juntos este
-              momento tan especial.
+              Nos llena de alegría compartir contigo que nuestro pequeño{" "}
+              <strong>Juan Ignacio</strong> está cumpliendo su primer añito.
+              Queremos celebrar este gran momento juntos en un lugar muy especial.
             </p>
             <p className="reveal-text detalle-body">
-              👶 Este evento está a nombre de <strong>Sara De León</strong>
+              🦁 ¡Lo celebraremos en el <strong>Zoológico La Aurora</strong>!
             </p>
             <div className="reveal-text detalle-detalles-box">
               <div className="detalle-item">
                 <span className="detalle-icon">📅</span>
-                <span><strong>Domingo 31 de Agosto</strong></span>
+                <span><strong>Sábado 27 de Septiembre de 2026</strong></span>
               </div>
               <div className="detalle-item">
-                <span className="detalle-icon">🕑</span>
-                <span><strong>2:00 PM</strong></span>
+                <span className="detalle-icon">🕞</span>
+                <span><strong>3:30 PM</strong></span>
               </div>
               <div className="detalle-item">
                 <span className="detalle-icon">📍</span>
-                <span>Salón Celebraciones, <br />Apartamentos Cendana<br /><em>5ta. Av. 08-06, Zona 9</em></span>
+                <span>Zoológico La Aurora<br /><em>Ciudad de Guatemala, Guatemala</em></span>
+              </div>
+              <div className="detalle-item">
+                <span className="detalle-icon">🎂</span>
+                <span>¡Primer cumpleaños de <strong>Juan Ignacio</strong>!</span>
               </div>
             </div>
           </div>
           <div className="detalle-img-wrap" ref={img2Ref}>
-            <img src={bbeleon} alt="Bebé" className="detalle-img" />
+            <img src={bbeleon} alt="Juan Ignacio" className="detalle-img" />
             <div className="img-frame-deco" />
           </div>
         </div>
@@ -356,20 +255,20 @@ const Invitacion = () => {
       {/* ── SECCIÓN 4: imagen lugar con parallax ── */}
       <section className="section-lugar" ref={section3Ref}>
         <div className="lugar-content">
-          <h2 className="lugar-title">El lugar</h2>
+          <h2 className="lugar-title">El lugar 🦁</h2>
           <div className="lugar-img-container" ref={imgLugarRef}>
-            <img src={IMGLugar} alt="Lugar del evento" className="lugar-img" />
+            <img src={IMGLugar} alt="Zoológico La Aurora" className="lugar-img" />
           </div>
           <div className="lugar-links">
             <a
-              href="https://www.google.com/maps/place/Apartamentos+Cendana/@14.6070273,-90.5240103,17z"
+              href="https://www.google.com/maps/place/Zoológico+La+Aurora/@14.5893,-90.5724,17z"
               target="_blank" rel="noopener noreferrer"
               className="mapa-btn"
             >
               📍 Google Maps
             </a>
             <a
-              href="https://www.waze.com/es-419/live-map/directions?to=ll.14.5293312%2C-90.5773056"
+              href="https://www.waze.com/es-419/live-map/directions?to=ll.14.5893%2C-90.5724"
               target="_blank" rel="noopener noreferrer"
               className="mapa-btn waze"
             >
@@ -381,9 +280,9 @@ const Invitacion = () => {
 
       {/* ── CTA FINAL ── */}
       <section className="section-cta">
-        <div className="cta-deco">💙</div>
+        <div className="cta-deco">🎂</div>
         <h2 className="cta-title">¿Nos acompañas?</h2>
-        <p className="cta-sub">¡Será un honor contar con tu presencia!</p>
+        <p className="cta-sub">¡Será un honor celebrar juntos este primer añito!</p>
         <button
           ref={btnRef}
           onClick={() => navigate("/confirmar")}
@@ -391,13 +290,12 @@ const Invitacion = () => {
         >
           Confirmar asistencia ✉️
         </button>
-        <p className="te-esperamos">Te esperamos con amor 💙</p>
+        <p className="te-esperamos">Te esperamos con amor 🎈</p>
       </section>
     </div>
   );
 };
 
-// Helper para cargar GSAP desde CDN si no está instalado
 function loadGSAPFromCDN() {
   return new Promise((resolve) => {
     if (window.gsap && window.ScrollTrigger) return resolve();
