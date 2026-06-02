@@ -17,6 +17,7 @@ const getCorsOptions = () => {
     "https://revelacion-six.vercel.app",
     "http://localhost:3000",
     "http://localhost:5173",
+    "http://192.168.0.13:5173"
   ];
 
   try {

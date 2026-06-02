@@ -52,7 +52,7 @@ const ConfirmacionForm = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:3001/api/invitados/confirmar",
+        "http://192.168.0.13:3001/api/invitados/confirmar",
         formData,
         {
           timeout: 10000,
