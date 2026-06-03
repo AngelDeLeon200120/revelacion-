@@ -32,8 +32,8 @@ const enviarConfirmacion = async (req, res) => {
       ? `
       <p>📍 Ubicación del evento:</p>
       <ul>
-        <li><a href="https://www.google.com/maps/place/Zoológico+La+Aurora/@14.5893,-90.5724,17z" target="_blank">Google Maps — Zoológico La Aurora</a></li>
-        <li><a href="https://www.waze.com/es-419/live-map/directions?to=ll.14.5893%2C-90.5724" target="_blank">Waze</a></li>
+        <li><a href="https://www.google.com/maps/place/Zool%C3%B3gico+La+Aurora/@14.5989504,-90.5284319,17z/data=!4m15!1m8!3m7!1s0x8589a162b49a51fd:0x179ee84e18f07f06!2sZool%C3%B3gico+La+Aurora!8m2!3d14.5989452!4d-90.525857!10e8!16s%2Fm%2F03nwgf6!3m5!1s0x8589a162b49a51fd:0x179ee84e18f07f06!8m2!3d14.5989452!4d-90.525857!16s%2Fm%2F03nwgf6?entry=ttu&g_ep=EgoyMDI2MDUzMS4wIKXMDSoASAFQAw%3D%3D" target="_blank">Google Maps — Zoológico La Aurora</a></li>
+        <li><a href="https://www.waze.com/es/live-map/directions/zoologico-la-aurora-parqueo-zoologico-la-aurora-zona-13,-guatemala?to=place.w.176619666.1766000052.408455" target="_blank">Waze</a></li>
       </ul>
       `
       : "";
