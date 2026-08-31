@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef } from "react";
 import axios from "axios";
+import { API_BASE } from "../config";
 import "../styles/PanelAdmin.css";
 
 const PanelAdmin = () => {
@@ -27,7 +28,7 @@ const PanelAdmin = () => {
       setLoading(true);
       setError(null);
       const { data } = await axios.get(
-        "http://localhost:3001/api/invitados/listar",
+        `${API_BASE}/api/invitados/listar`,
         { timeout: 10000, headers: { "Content-Type": "application/json", Accept: "application/json" } }
       );
       if (data && data.success) {
@@ -319,13 +320,12 @@ const PanelAdmin = () => {
               <th>Asistencia</th>
               <th>Personas</th>
               <th>Fecha</th>
-              <th>Placa</th>
             </tr>
           </thead>
           <tbody>
             {loading && invitados.length === 0 ? (
               <tr>
-                <td colSpan="7" className="pa-table-empty">
+                <td colSpan="6" className="pa-table-empty">
                   <span className="pa-spinner pa-spinner--dark" /> Cargando...
                 </td>
               </tr>
@@ -344,12 +344,11 @@ const PanelAdmin = () => {
                   </td>
                   <td className="pa-td-center">{inv.cantidad || 1}</td>
                   <td className="pa-td-date">{formatDate(inv.created_at)}</td>
-                  <td className="pa-td-center">{inv.placaVehiculo || "—"}</td>
                 </tr>
               ))
             ) : (
               <tr>
-                <td colSpan="7" className="pa-table-empty">
+                <td colSpan="6" className="pa-table-empty">
                   {error ? "Error al cargar datos" : "No hay registros"}
                 </td>
               </tr>

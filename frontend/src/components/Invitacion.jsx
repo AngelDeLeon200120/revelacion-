@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import IMGLugar from "../assets/lugar.jpg";
-import bbeleon from "../assets/bb2.jpg";
+import bbeleon from "../assets/animales.png";
 import Musica from "../assets/musica.mp3";
 import "../styles/Invitacion.css";
 
@@ -177,11 +177,11 @@ const Invitacion = () => {
               <span key={i} className="star" style={{ "--i": i }}>{s}</span>
             ))}
           </div>
-          <p className="hero-eyebrow" ref={titleRef}>Estás invitado a celebrar</p>
+          <p className="hero-eyebrow" ref={titleRef}>Estás invitado a celebrar el primer añito de mi vida</p>
           <h1 className="hero-nombre" ref={nombreRef}>
             <span className="nombre-line">Juan Ignacio</span>
           </h1>
-          <p className="hero-sub" ref={subtitleRef}>¡Su primer añito! 🎂 · 27 de Septiembre · 3:30 PM</p>
+          <p className="hero-sub" ref={subtitleRef}> Te invita este 🎂 · 27 de Septiembre · 3:00 PM</p>
           <div className="hero-scroll-hint">
             <span className="scroll-arrow">↓</span>
           </div>
@@ -192,7 +192,7 @@ const Invitacion = () => {
       <section className="section-detalle" ref={section2Ref}>
         <div className="detalle-grid">
           <div className="detalle-text">
-            <p className="reveal-text tag-label">🎈 Con mucho amor</p>
+            {/* <p className="reveal-text tag-label">🎈 Con mucho amor</p> */}
             <h2 className="reveal-text detalle-heading">
               ¡Cumple su primer año!
             </h2>
@@ -202,20 +202,20 @@ const Invitacion = () => {
               Queremos celebrar este gran momento juntos en un lugar muy especial.
             </p>
             <p className="reveal-text detalle-body">
-              🦁 ¡Lo celebraremos en el <strong>Zoológico La Aurora</strong>!
+              🦁 ¡Lo celebraremos en el <strong>Zoológico La Aurora</strong>, salón La Colmena!
             </p>
             <div className="reveal-text detalle-detalles-box">
               <div className="detalle-item">
                 <span className="detalle-icon">📅</span>
-                <span><strong>Sábado 27 de Septiembre de 2026</strong></span>
+                <span><strong>Domingo 27 de Septiembre de 2026</strong></span>
               </div>
               <div className="detalle-item">
                 <span className="detalle-icon">🕞</span>
-                <span><strong>3:30 PM</strong></span>
+                <span><strong>3:00 PM</strong></span>
               </div>
               <div className="detalle-item">
                 <span className="detalle-icon">📍</span>
-                <span>Zoológico La Aurora<br /><em>Ciudad de Guatemala, Guatemala</em></span>
+                <span>Zoológico La Aurora<br /><em>Ciudad de Guatemala, Guatemala</em>, La entrada es por la taquilla "No. 10", salón La Colmena</span>
               </div>
               <div className="detalle-item">
                 <span className="detalle-icon">🎂</span>

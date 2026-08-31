@@ -1,7 +1,7 @@
 import { useLocation } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import IMGLugar from "../assets/regalos.png";
-import Leon from "../assets/leoncorona.jpeg";
+import Leon from "../assets/leon.png";
 import musica from "../assets/musica.mp3";
 import AOS from "aos";
 import "aos/dist/aos.css";
@@ -29,7 +29,7 @@ const Respuesta = () => {
   useEffect(() => {
     AOS.init({ duration: 900 });
 
-    // 27 de septiembre de 2026 a las 3:30 PM
+    // 27 de septiembre de 2026 a las 3:00 PM
     const evento = new Date(2026, 8, 27, 15, 30, 0);
 
     const actualizarContador = () => {
@@ -152,15 +152,15 @@ const Respuesta = () => {
             <div className="r-info-box">
               <div className="r-info-item">
                 <span>📅</span>
-                <span><strong>Sábado 27 de Septiembre de 2026</strong></span>
+                <span><strong>Domingo 27 de Septiembre de 2026</strong></span>
               </div>
               <div className="r-info-item">
                 <span>🕞</span>
-                <span><strong>3:30 PM</strong></span>
+                <span><strong>3:00 PM</strong></span>
               </div>
               <div className="r-info-item">
                 <span>📍</span>
-                <span><strong>Zoológico La Aurora</strong><br /><em>Ciudad de Guatemala, Guatemala</em></span>
+                <span><strong>Zoológico La Aurora</strong><br /><em>Ciudad de Guatemala, Guatemala</em> La entrada es por la taquilla "número diez"</span>
               </div>
               <div className="r-info-item">
                 <span>👥</span>
@@ -216,7 +216,7 @@ const Respuesta = () => {
         <div className="r-regalos-content">
           <h2 className="r-section-title" data-aos="fade-up">El regalo 🎁</h2>
           <p className="r-body-text" data-aos="fade-up">
-            Tu presencia es el mejor regalo. Si deseas traer algo, un detalle para Juan Ignacio será más que suficiente. ¡Gracias!
+            Tu presencia es nuestro mejor regalo, pero si deseas tener un detalle conmigo, lo recibiré con mucho cariño
           </p>
           <div className="r-regalos-img-wrap" data-aos="fade-up">
             <div className="r-img-overflow">

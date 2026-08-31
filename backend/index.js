@@ -17,7 +17,7 @@ const getCorsOptions = () => {
     "https://revelacion-six.vercel.app",
     "http://localhost:3000",
     "http://localhost:5173",
-    "http://192.168.0.13:5173"
+    "http://192.168.0.9:5173"
   ];
 
   try {
@@ -29,7 +29,11 @@ const getCorsOptions = () => {
     return {
       origin: function (origin, callback) {
         if (!origin) return callback(null, true); // permitir sin origen (como curl, Postman)
-        if (allowedOrigins.includes(origin)) {
+        // Permitir cualquier host de la LAN / localhost en desarrollo (IP puede cambiar por DHCP)
+        const lanOrLocalhost = /^http:\/\/(localhost|127\.0\.0\.1|10\.\d+\.\d+\.\d+|192\.168\.\d+\.\d+|172\.(1[6-9]|2\d|3[01])\.\d+\.\d+)(:\d+)?$/;
+        // Permitir los deploys de Vercel (producción y previews: *.vercel.app)
+        const vercel = /^https:\/\/[a-z0-9-]+\.vercel\.app$/i;
+        if (allowedOrigins.includes(origin) || lanOrLocalhost.test(origin) || vercel.test(origin)) {
           return callback(null, true);
         } else {
           return callback(new Error("CORS no permitido"));

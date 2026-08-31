@@ -1,18 +1,21 @@
 const db = require("../config/database.js");
 const nodemailer = require("nodemailer");
 
+// URL pública del backend (para imágenes embebidas en los correos).
+const PUBLIC_URL = (process.env.API_PUBLIC_URL || "http://localhost:3001").replace(/\/$/, "");
+
 const enviarConfirmacion = async (req, res) => {
   console.log(req.body);
-  const { nombre, email, asistencia, cantidad, placaVehiculo } = req.body;
+  const { nombre, email, asistencia, cantidad } = req.body;
 
-  if (!nombre || !placaVehiculo) {
-    return res.status(400).json({ error: "Nombre y placa son requeridos" });
+  if (!nombre) {
+    return res.status(400).json({ error: "El nombre es requerido" });
   }
 
   try {
     const [result] = await db.query(
-      "INSERT INTO invitados (nombre, email, asistencia, cantidad, placaVehiculo) VALUES (?, ?, ?, ?, ?)",
-      [nombre, email, asistencia, cantidad, placaVehiculo]
+      "INSERT INTO invitados (nombre, email, asistencia, cantidad) VALUES (?, ?, ?, ?)",
+      [nombre, email, asistencia, cantidad]
     );
 
     const transporter = nodemailer.createTransport({
@@ -43,12 +46,12 @@ const enviarConfirmacion = async (req, res) => {
       <p>${
         asistencia
           ? `¡Nos alegra muchísimo que puedas acompañarnos a celebrar el <strong>primer cumpleaños de Juan Ignacio</strong>! 🎂🦁<br><br>
-             Te esperamos el <strong>sábado 27 de Septiembre de 2026</strong> a las <strong>3:30 PM</strong> en el
-             <strong>Zoológico La Aurora</strong>, Ciudad de Guatemala.<br><br>
+             Te esperamos el <strong>Domingo 27 de Septiembre de 2026</strong> a las <strong>3:00 PM</strong> en el
+             <strong>Zoológico La Aurora, salón La Colmena</strong> Ciudad de Guatemala.<br><br>
              ¡Será una celebración llena de alegría y amor! 💙`
           : "Lamentamos que no puedas asistir. Gracias por avisarnos, te tendremos presente 💔"
       }</p>
-      <img src="https://revelacion-backend.onrender.com/assets/bb2.jpg" alt="Juan Ignacio" style="width: 100%; max-width: 400px; border-radius: 10px; margin: 20px 0;" />
+      <img src="${PUBLIC_URL}/assets/bb2.jpg" alt="Juan Ignacio" style="width: 100%; max-width: 400px; border-radius: 10px; margin: 20px 0;" />
       ${lugarHTML}
       <p>Con mucho cariño,<br>Familia De León Méndez 💙</p>
     `;
@@ -78,7 +81,7 @@ const enviarConfirmacion = async (req, res) => {
 const obtenerInvitados = async (req, res) => {
   try {
     const [results] = await db.query(
-      "SELECT id, nombre, email, asistencia, cantidad, placaVehiculo, fecha_confirmacion " +
+      "SELECT id, nombre, email, asistencia, cantidad, fecha_confirmacion " +
       "FROM invitados ORDER BY fecha_confirmacion DESC"
     );
 

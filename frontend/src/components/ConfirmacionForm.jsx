@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { API_BASE } from "../config";
 import "../styles/ConfirmacionForm.css";
 
 const ConfirmacionForm = () => {
@@ -10,7 +11,6 @@ const ConfirmacionForm = () => {
     email: "",
     asistencia: true,
     cantidad: 1,
-    placaVehiculo: "",
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -52,7 +52,7 @@ const ConfirmacionForm = () => {
 
     try {
       const response = await axios.post(
-        "http://localhost:3001/api/invitados/confirmar",
+        `${API_BASE}/api/invitados/confirmar`,
         formData,
         {
           timeout: 10000,
@@ -73,7 +73,6 @@ const ConfirmacionForm = () => {
                 nombre: formData.nombre,
                 asistencia: String(formData.asistencia),
                 cantidad: formData.cantidad,
-                placaVehiculo: formData.placaVehiculo,
               };
               localStorage.setItem("confirmacion", JSON.stringify(confirmacion));
               navigate("/respuesta", { state: confirmacion });
@@ -84,7 +83,6 @@ const ConfirmacionForm = () => {
             nombre: formData.nombre,
             asistencia: String(formData.asistencia),
             cantidad: formData.cantidad,
-            placaVehiculo: formData.placaVehiculo,
           };
           localStorage.setItem("confirmacion", JSON.stringify(confirmacion));
           navigate("/respuesta", { state: confirmacion });
@@ -194,7 +192,7 @@ const ConfirmacionForm = () => {
         <div className="cf-header">
           <div className="cf-header-icon">💙</div>
           <h2 className="cf-title">¿Nos acompañas?</h2>
-          <p className="cf-subtitle">Baby Shower de Juan Ignacio · 31 de Agosto</p>
+          <p className="cf-subtitle">A celebrar el primer añito de Juan Ignacio · 27 de Septiembre</p>
         </div>
 
         {error && (
@@ -308,26 +306,6 @@ const ConfirmacionForm = () => {
               <span className="cf-radio-emoji">😢</span>
               <span className="cf-radio-text">No podré asistir</span>
             </label>
-          </div>
-        </div>
-
-        {/* Placa */}
-        <div className="cf-field" ref={(el) => setFieldRef(el, 4)}>
-          <label className="cf-label" htmlFor="placaVehiculo">
-            Placa del vehículo <span className="cf-optional">(opcional)</span>
-          </label>
-          <div className="cf-input-wrap">
-            <span className="cf-input-icon">🚗</span>
-            <input
-              id="placaVehiculo"
-              type="text"
-              name="placaVehiculo"
-              placeholder="ABC-123"
-              value={formData.placaVehiculo}
-              onChange={handleChange}
-              maxLength="20"
-              className="cf-input"
-            />
           </div>
         </div>
 
